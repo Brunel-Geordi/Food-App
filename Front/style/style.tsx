@@ -44,5 +44,9 @@ export const style = StyleSheet.create({
     },
     bouton:{
       backgroundColor:"none"
+    },
+    connect:{
+      tintColor:"black",
+      color:"#792D2D"
     }
   });

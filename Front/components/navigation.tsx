@@ -29,6 +29,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import "react-native-gesture-handler";
 import Command from "./command";
 import Homescreen from "./Home";
+import Connexion from "./connexion";
 import Compte from "./compte";
 import { style } from "../style/style";
 import { Button, Pressable, Text } from "react-native";
@@ -82,7 +83,7 @@ export function Tabnav({ navigation }): JSX.Element {
       />
       <Tab.Screen
         name={"Mon Compte"}
-        component={Compte}
+        component={Connexion}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons
