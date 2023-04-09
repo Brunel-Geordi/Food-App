@@ -31,7 +31,7 @@ const signUp = () =>{
 
 const callApi = async () => {
   const queryString = `name=${nom}&email=${mail}&password=${pass}`;
-  const response = await fetch(`http://10.139.0.14:4548/users?${queryString}`, {
+  const response = await fetch(`http://192.168.104.67:4548/users?${queryString}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

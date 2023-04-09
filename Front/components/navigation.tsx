@@ -108,14 +108,15 @@ export function Drawer({ navigation }): JSX.Element {
   return (
     <Draw.Navigator
       screenOptions={{
-        drawerActiveBackgroundColor: "#E1C7C7",
+        drawerActiveBackgroundColor: "#C8B1B1",
         drawerActiveTintColor: "#792D2D",
-        sceneContainerStyle: { backgroundColor: "#E4DADA" },
+        sceneContainerStyle: { backgroundColor: "#C8B1B1" },
       }}
     >
       <Draw.Screen
         name="Tous nos produits"
         component={Command}
+        initialParams={{ option: "all" }}
         options={{
           drawerIcon: ({color, size}) => (
             <MaterialIcons
@@ -143,7 +144,7 @@ export function Drawer({ navigation }): JSX.Element {
       <Draw.Screen
         name="Sandwitchs"
         component={Command}
-        initialParams={{ option: "sandwitch" }}
+        initialParams={{ option: "burgers" }}
         options={{
           drawerIcon: ({color, size}) => (
             <FontAwesome5
@@ -156,7 +157,7 @@ export function Drawer({ navigation }): JSX.Element {
       />
       <Draw.Screen
         name="Boissons"
-        initialParams={{ option: "boissons" }}
+        initialParams={{ option: "boisson" }}
         component={Command}
         options={{
           drawerIcon: ({color, size}) => (
