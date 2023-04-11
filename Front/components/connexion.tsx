@@ -7,7 +7,7 @@
 
 import React from "react";
 import { style } from "../style/style";
-import {useState} from 'react'
+import { useState } from "react";
 
 import {
   ScrollView,
@@ -15,50 +15,40 @@ import {
   Text,
   TextInput,
   Pressable,
-  Button
+  Button,
 } from "react-native";
 
-function Connexion({ navigation}: any): JSX.Element {
-const [selectedOption, setSelectedOption] = useState(null);
+function Connexion({ navigation }: any): JSX.Element {
+  const [selectedOption, setSelectedOption] = useState(null);
+  const signIn = () => {
+    setSelectedOption(true);
+  };
+  const signUp = () => {
+    setSelectedOption(false);
+  };
+  const callApi = async () => {
+    const queryString = `name=${nom}&email=${mail}&password=${pass}`;
+    const response = await fetch(
+      `http://192.168.104.67:4548/users?${queryString}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+    return result;
+  };
 
-const signIn = () =>{
-  setSelectedOption(true);
-}
-const signUp = () =>{
-  setSelectedOption(false);
-
-}
-
-const callApi = async () => {
-  const queryString = `name=${nom}&email=${mail}&password=${pass}`;
-  const response = await fetch(`http://192.168.104.67:4548/users?${queryString}`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-  const result = await response.json();
-  return result;
-};
-
-
-  const [nom, setName ] = React.useState("");
-  const [mail, setMail ] = React.useState("");
+  const [nom, setName] = React.useState("");
+  const [mail, setMail] = React.useState("");
   const [pass, setPass] = React.useState("");
-
-  // const [pass] = React.useState("");
-  // const [mail] = React.useState("");
   return (
     <>
-          <Button
-          title="Me connecter"
-          onPress={signIn}
-          />
-          <Button
-          title="M'inscrire"
-          onPress={signUp}
-          /> 
+      <Button title="Me connecter" onPress={signIn} />
+      <Button title="M'inscrire" onPress={signUp} />
       {selectedOption ? (
         <SafeAreaView>
           <ScrollView style={{ margin: 30 }}>
@@ -82,7 +72,7 @@ const callApi = async () => {
             </Pressable>
           </ScrollView>
         </SafeAreaView>
-      ) : selectedOption===false ?  (
+      ) : selectedOption === false ? (
         <SafeAreaView>
           {/* Formulaire d'inscription */}
           <ScrollView style={{ margin: 30 }}>
@@ -110,15 +100,12 @@ const callApi = async () => {
               secureTextEntry={true}
               value={pass}
             />
-            <Button
-            title="Valider"
-            onPress={callApi}
-            />
-
+            <Button title="Valider" onPress={callApi} />
           </ScrollView>
         </SafeAreaView>
-      ):(<></>)
-    }
+      ) : (
+        <></>
+      )}
     </>
   );
 }

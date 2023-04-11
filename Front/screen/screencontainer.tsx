@@ -1,4 +1,4 @@
-/*
+/* 
  *      _______         __         ___        ____   ______     __      ___
  *    /   _____|      /    \      |   \      /    | |   __  \  |  |   /     \
  *   /   /           /  /\  \     |    \    /     | |  |__|  | |  |  /   _   \
@@ -18,16 +18,36 @@
  *
  */
 import React from "react";
-import { Text, Button } from "react-native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import Drawer from "./drawerscreen";
+import Panier from "../components/panier";
+import Tabnav from "./tabscreen";
 
-function Panier({ navigation }: any): JSX.Element {
+function Screen(): JSX.Element {
+  const Stack = createNativeStackNavigator();
   return (
-    <>
-      <Button title="Home" onPress={() => navigation.navigate("Home")} />
-      <Text>Je suis dans </Text>
-      {/* <Text>{Data()}</Text> */}
-    </>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Tabnav"
+          component={Tabnav}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Panier"
+          component={Panier}
+          options={{ presentation: "containedModal" }}
+        />
+        <Stack.Screen
+          name="Drawer"
+          component={Drawer}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-export default Panier;
+export default Screen;

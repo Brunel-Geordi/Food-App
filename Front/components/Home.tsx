@@ -1,26 +1,26 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
+/*
+ *      _______         __         ___        ____   ______     __      ___
+ *    /   _____|      /    \      |   \      /    | |   __  \  |  |   /     \
+ *   /   /           /  /\  \     |    \    /     | |  |__|  | |  |  /   _   \
+ *  |   |  ____     /  /__\  \    |  |\  \ /  /|  | |  _____/  |  | |   |  |  |
+ *  |   |  |__ |   /   ____   \   |  |  \___/  |  | |  |       |  | |   |_ |  |
+ *   \  \ _ |  |  /   /    \   \  |  |         |  | |  |       |  |  \       /
+ *    \ _______| /__ /      \   \ |__|         |__| |__|       |__|   \ ___ /
  *
- * @format
+ *
+ *      ________    _ _______      ___        _____       _____      __          _____     _____     __      __   __     __   _______   __
+ *    /   ______|  |   ______|   /     \     |  __  \    |      \   |  |        |  __  \  |  __  \  |  |    |  | |  \   |  | |   ____| |  |
+ *   /   /         |  |__       /   __   \   | |__|  |   |   __  \  |  |        | |__|  | | |__|  | |  |    |  | |   \  |  | |  |__    |  |
+ *  |   |   _____  |     |     |   |  |   |  |     _/    |  |  \  | |  |   __   |     _/  |     _/  |  |    |  | |    \ |  | |     |   |  |
+ *  |   |  |__  |  |   __|     |   |__|   |  |  __  \    |  |__/  | |  |  |__|  |  __  \  |  __  \  |  |    |  | |  |\ \|  | |   __|   |  |
+ *   \   \ _ |  |  |  |______   \        /   | |  \  \   |       /  |  |        | |__|  | | |  \  \ |   \__/   | |  | \    | |  |____  |  |____
+ *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
+ *
  */
-
 import React from "react";
 import { Ionicons, MaterialCommunityIcons, Fontisto } from "@expo/vector-icons";
 import { style } from "../style/style";
-
-import {
-  ScrollView,
-  SafeAreaView,
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
-  Button,
-  Alert,
-  Modal,
-} from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { Text, View } from "react-native";
 
 function Homescreen({ navigation }: any): JSX.Element {
   return (
