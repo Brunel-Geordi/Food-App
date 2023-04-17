@@ -21,6 +21,7 @@ import {
   FontAwesome5,
   MaterialIcons,
 } from "@expo/vector-icons";
+import { Image } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import "react-native-gesture-handler";
 import Command from "../components/command";
@@ -33,6 +34,10 @@ function Drawer({ navigation }): JSX.Element {
         drawerActiveBackgroundColor: "#C8B1B1",
         drawerActiveTintColor: "#792D2D",
         sceneContainerStyle: { backgroundColor: "#C8B1B1" },
+        headerStyle: {
+          backgroundColor: "#C8B1B1",
+          borderBottomWidth: 3,
+        },
       }}
     >
       <Draw.Screen
@@ -43,6 +48,7 @@ function Drawer({ navigation }): JSX.Element {
           drawerIcon: ({ color, size }) => (
             <MaterialIcons name="restaurant" size={size} color={color} />
           ),
+          headerTitleAlign: "center",
         }}
       />
       <Draw.Screen
@@ -53,6 +59,7 @@ function Drawer({ navigation }): JSX.Element {
           drawerIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="food" size={size} color={color} />
           ),
+          headerTitleAlign: "center",
         }}
       />
       <Draw.Screen
@@ -63,6 +70,7 @@ function Drawer({ navigation }): JSX.Element {
           drawerIcon: ({ color, size }) => (
             <FontAwesome5 name="hamburger" size={size} color={color} />
           ),
+          headerTitleAlign: "center",
         }}
       />
       <Draw.Screen
@@ -73,6 +81,7 @@ function Drawer({ navigation }): JSX.Element {
           drawerIcon: ({ color, size }) => (
             <Entypo name="drink" size={size} color={color} />
           ),
+          headerTitleAlign: "center",
         }}
       />
       <Draw.Screen
@@ -87,6 +96,7 @@ function Drawer({ navigation }): JSX.Element {
               color={color}
             />
           ),
+          headerTitleAlign: "center",
         }}
       />
       <Draw.Screen
@@ -97,6 +107,7 @@ function Drawer({ navigation }): JSX.Element {
           drawerIcon: ({ color, size }) => (
             <FontAwesome5 name="cookie-bite" size={size} color={color} />
           ),
+          headerTitleAlign: "center",
         }}
       />
     </Draw.Navigator>

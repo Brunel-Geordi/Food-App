@@ -29,7 +29,7 @@ function Connexion({ navigation }: any): JSX.Element {
   const callApi = async () => {
     const queryString = `name=${nom}&email=${mail}&password=${pass}`;
     const response = await fetch(
-      `http://192.168.104.67:4548/users?${queryString}`,
+      `http://192.168.175.67:5000/users?${queryString}`,
       {
         method: "POST",
         headers: {

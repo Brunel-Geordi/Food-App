@@ -33,7 +33,8 @@ function Tabnav({ navigation }): JSX.Element {
   return (
     <Tab.Navigator
       screenOptions={{ tabBarActiveTintColor: "#792D2D" }}
-      sceneContainerStyle={{ backgroundColor: "#E4DADA" }}
+      sceneContainerStyle={{ backgroundColor: "#C8B1B1" }}
+      initialRouteName="Notre carte™"    
     >
       <Tab.Screen
         name="Home"
@@ -42,6 +43,7 @@ function Tabnav({ navigation }): JSX.Element {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-home" size={size} color={color} />
           ),
+          headerTitleAlign: "center",
         }}
       />
       <Tab.Screen
@@ -68,6 +70,7 @@ function Tabnav({ navigation }): JSX.Element {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person-sharp" size={size} color={color} />
           ),
+          headerTitleAlign: "center"
         }}
       />
     </Tab.Navigator>

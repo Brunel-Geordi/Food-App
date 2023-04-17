@@ -24,6 +24,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import Drawer from "./drawerscreen";
 import Panier from "../components/panier";
 import Tabnav from "./tabscreen";
+import Description from "../components/product_description";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function Screen(): JSX.Element {
   const Stack = createNativeStackNavigator();
@@ -38,7 +40,12 @@ function Screen(): JSX.Element {
         <Stack.Screen
           name="Panier"
           component={Panier}
-          options={{ presentation: "containedModal" }}
+          options={{ presentation: "containedModal"}}
+        />
+        <Stack.Screen
+          name="Product"
+          component={Description}
+          options={{ presentation: "modal" }}
         />
         <Stack.Screen
           name="Drawer"

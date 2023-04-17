@@ -31,7 +31,7 @@ function Command({ navigation, route }): JSX.Element {
   }, []);
 
   const fetchUserData = () => {
-    fetch(`http://192.168.104.67:4548/${route.params?.option}`)
+    fetch(`http://192.168.175.67:5000/${route.params?.option}`)
       .then((response) => {
         return response.json();
       })
@@ -62,7 +62,7 @@ function Command({ navigation, route }): JSX.Element {
                 width: 155,
                 borderRadius: 5,
               }}
-            >
+              onPress={() => navigation.navigate("Product")}            >
               <Text
                 style={{
                   fontSize: 18,
@@ -75,7 +75,7 @@ function Command({ navigation, route }): JSX.Element {
               </Text>
               <Image
                 source={{
-                  uri: `http://192.168.104.67:4548/image/${product.image}`,
+                  uri: `http://192.168.175.67:5000/image/${product.image}`,
                 }}
                 style={{
                   width: 130,
