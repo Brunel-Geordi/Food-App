@@ -1,4 +1,4 @@
-/* 
+/*
  *      _______         __         ___        ____   ______     __      ___
  *    /   _____|      /    \      |   \      /    | |   __  \  |  |   /     \
  *   /   /           /  /\  \     |    \    /     | |  |__|  | |  |  /   _   \
@@ -18,33 +18,26 @@
  *
  */
 import React, { useEffect, useState } from "react";
-import { style } from "../style/style";
 import { ScrollView, TouchableOpacity, Image, Text, View } from "react-native";
+import { getProduct, imageUrl } from "../services/get";
 
 function Command({ navigation, route }): JSX.Element {
-  const [products, setBurgers] = useState([]);
   const [view, setView] = useState("");
-
+  const [products, setProduct] = useState<{id_bg: number; name: string, image: string, price: string}[]>([]);;
+  
   useEffect(() => {
     setView(route);
-    fetchUserData();
+    setAliment()
   }, []);
-
-  const fetchUserData = () => {
-    fetch(`http://192.168.175.67:5000/${route.params?.option}`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setBurgers(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  
+  const setAliment = async () => {
+    const data = await getProduct(`${route.params?.option}`);
+    setProduct(data)
   };
+
   return (
     <ScrollView horizontal={false}>
-      {products.length > 0 && (
+      {(products && products.length) > 0 && (
         <View
           style={{
             flex: 1,
@@ -62,7 +55,8 @@ function Command({ navigation, route }): JSX.Element {
                 width: 155,
                 borderRadius: 5,
               }}
-              onPress={() => navigation.navigate("Product")}            >
+              onPress={() => navigation.navigate("Menu", {select: route.params?.option, name:product.name, image: product.image})}
+            >
               <Text
                 style={{
                   fontSize: 18,
@@ -75,7 +69,7 @@ function Command({ navigation, route }): JSX.Element {
               </Text>
               <Image
                 source={{
-                  uri: `http://192.168.175.67:5000/image/${product.image}`,
+                  uri: `${imageUrl}${product.image}`
                 }}
                 style={{
                   width: 130,

@@ -40,12 +40,13 @@ function Screen(): JSX.Element {
         <Stack.Screen
           name="Panier"
           component={Panier}
-          options={{ presentation: "containedModal"}}
+          options={{headerTitleAlign: "center"}}
         />
         <Stack.Screen
-          name="Product"
+          name="Menu"
           component={Description}
           options={{ presentation: "modal" }}
+          
         />
         <Stack.Screen
           name="Drawer"

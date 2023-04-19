@@ -17,125 +17,126 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View, Button, Image } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import Panier from "./panier";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { imageUrl, dropSelction } from "../services/get";
 
-function Description({ navigation }: any): JSX.Element {
+function Description({ route, navigation }: any): JSX.Element {
   useEffect(() => {
-    fetchUserData();
-    fetchUserData2()
+    setOption();
   }, []);
+
+  const { select, name, image } = route.params;
   const [selectedDrink, setSelectedDrink] = useState(null);
   const [openDrink, setOpenDrink] = useState(false);
-
   const [selectedSnack, setSelectedSnack] = useState(null);
   const [openSnack, setOpenSnack] = useState(false);
 
-  const [products, setBurgers] = useState([]);
   const [drink, setDrink] = useState([]);
-
   const [snack, setSnack] = useState([]);
 
-
-  const fetchUserData = () => {
-    fetch(`http://192.168.175.67:5000/boisson`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const newOptions = data.map((product) => ({
-          label: product.name,
-          value: product.image,
-        }));
-        // console.log("new options:", newOptions);
-        setDrink([{ label: "", value: null }, ...newOptions]);
-        setBurgers(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const fetchUserData2 = () => {
-    fetch(`http://192.168.175.67:5000/snack`)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const newOptions = data.map((product) => ({
-          label: product.name,
-          value: product.image,
-        }));
-        // console.log("new options:", newOptions);
-        setSnack([{ label: "", value: null }, ...newOptions]);
-        setBurgers(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const setOption = async () => {
+    const data = await dropSelction(`snack`);
+    const data1 = await dropSelction(`boisson`);
+    setSnack(data);
+    setDrink(data1);
   };
   return (
     <>
       <SafeAreaProvider>
-      <View style={{ margin: 10 }} />
-        <DropDownPicker
-          open={openDrink}
-          value={selectedDrink}
-          items={drink}
-          setOpen={setOpenDrink}
-          setValue={setSelectedDrink}
-          placeholder="Choisir une boison"
-        />
-        {selectedDrink && (
-          <Image
-            source={{
-              uri: `http://192.168.175.67:5000/image/${selectedDrink}`,
-            }}
-            style={{
-              marginTop: 12,
-              width: 170,
-              height: 150,
-              alignSelf: "center",
-              justifyContent: "center",
-            }}
-          />
-        )}
+        {select == "menu" ? (
+          <SafeAreaProvider>
+            <Text>{name}</Text>
+            <Image
+              source={{
+                uri: `${imageUrl}${image}`,
+              }}
+              style={{
+                width: 130,
+                height: 120,
+                alignSelf: "center",
+                justifyContent: "center",
+              }}
+            />
+            <View style={{ margin: 10 }} />
+            <DropDownPicker
+              open={openDrink}
+              value={selectedDrink}
+              items={drink}
+              setOpen={setOpenDrink}
+              setValue={setSelectedDrink}
+              placeholder="Choisir une boison"
+              style={{ borderColor: "transparent" }}
+            />
+            {selectedDrink && (
+              <Image
+                source={{
+                  uri: `${imageUrl}${selectedDrink}`,
+                }}
+                style={{
+                  marginTop: 12,
+                  width: 140,
+                  height: 120,
+                  alignSelf: "center",
+                  justifyContent: "center",
+                }}
+              />
+            )}
 
-        <View style={{ margin: 15 }} />
+            <View style={{ margin: 5 }} />
 
-        <DropDownPicker
-          open={openSnack}
-          value={selectedSnack}
-          items={snack}
-          setOpen={setOpenSnack}
-          setValue={setSelectedSnack}
-          placeholder="Choisir une snack"
-          disabled={!selectedDrink}
-          disabledStyle={{ opacity: 0.5 }}
-          zIndex={2000}
-          zIndexInverse={2000}
-        />
-        {selectedDrink && (
-          <Image
-            source={{
-              uri: `http://192.168.175.67:5000/image/${selectedSnack}`,
-            }}
-            style={{
-              marginTop: 12,
-              width: 170,
-              height: 150,
-              alignSelf: "center",
-              justifyContent: "center",
-            }}
-          />
+            <DropDownPicker
+              open={openSnack}
+              value={selectedSnack}
+              items={snack}
+              setOpen={setOpenSnack}
+              setValue={setSelectedSnack}
+              placeholder="Choisir une snack"
+              disabled={!selectedDrink}
+              disabledStyle={{ opacity: 0.5 }}
+              zIndex={2000}
+              zIndexInverse={2000}
+              style={{ borderColor: "transparent" }}
+            />
+            {selectedDrink && (
+              <Image
+                source={{
+                  uri: `${imageUrl}${selectedSnack}`,
+                }}
+                style={{
+                  marginTop: 12,
+                  width: 170,
+                  height: 150,
+                  alignSelf: "center",
+                  justifyContent: "center",
+                }}
+              />
+            )}
+          </SafeAreaProvider>
+        ) : (
+          <View>
+            <Text>{name}</Text>
+            <Image
+              source={{
+                uri: `${imageUrl}${image}`,
+              }}
+              style={{
+                width: 130,
+                height: 120,
+                alignSelf: "center",
+                justifyContent: "center",
+              }}
+            />
+          </View>
         )}
       </SafeAreaProvider>
-      <Button title="Ajouter au panier" onPress={() => navigation.navigate("Panier")}/>
+      <Button
+        title="Ajouter au panier"
+        onPress={() => navigation.navigate("Panier")}
+      />
     </>
   );
 }
-
 export default Description;
