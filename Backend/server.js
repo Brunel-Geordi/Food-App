@@ -1,26 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-app.use('/image', express.static('IMG'))
+app.use('/image', express.static('IMG')); 
+const port = 5000;
 
 const usersRouter = require('./routes/users');
-const burgersRouter = require('./routes/burgers');
-const boissonRouter = require('./routes/boisson');
-const snackRouter = require('./routes/snacks');
-const dessertRouter = require('./routes/dessert');
-const menuRouter = require('./routes/menu');
-
-const port = 5000;
+const router = require('./routes/all');
 
 app.use(bodyParser.json({type:'application/json'}));
 app.use(bodyParser.urlencoded({extends:true}));
 
 app.use('/users', usersRouter);
-app.use('/burgers', burgersRouter);
-app.use('/boisson', boissonRouter);
-app.use('/snack', snackRouter);
-app.use('/dessert', dessertRouter);
-app.use('/menu', menuRouter);
+app.use('/burgers', router.burgers);
+app.use('/boisson', router.boisson);
+app.use('/snack', router.snack);
+app.use('/dessert', router.dessert);
+app.use('/menu', router.menu);
+app.use('/all', router.all);
 
 const server = app.listen(port, function(){
   const host = server.address().address;

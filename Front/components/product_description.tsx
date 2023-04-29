@@ -28,21 +28,35 @@ function Description({ route, navigation }: any): JSX.Element {
     setOption();
   }, []);
 
-  const { select, name, image } = route.params;
+  let [qte, setQuantity] = useState(1);
+
+  const { select, name, image, price } = route.params;
   const [selectedDrink, setSelectedDrink] = useState(null);
   const [openDrink, setOpenDrink] = useState(false);
   const [selectedSnack, setSelectedSnack] = useState(null);
+  const [label, setLabel] = useState(null);
   const [openSnack, setOpenSnack] = useState(false);
 
   const [drink, setDrink] = useState([]);
   const [snack, setSnack] = useState([]);
 
-  const setOption = async () => {
-    const data = await dropSelction(`snack`);
-    const data1 = await dropSelction(`boisson`);
-    setSnack(data);
-    setDrink(data1);
+  const sQuantity = (val: string) => {
+    if (val == "+1") {
+      setQuantity(qte + 1);
+    } else if (qte > 1 && val == "-1") {
+      setQuantity(qte - 1);
+    } else {
+      setQuantity(qte);
+    }
   };
+  async function setOption() {
+    const selSnack = await dropSelction(`snack`);
+    const selDrink = await dropSelction(`boisson`);
+    console.log(selDrink);
+    setSnack(selSnack);
+    setDrink(selDrink);
+  }
+
   return (
     <>
       <SafeAreaProvider>
@@ -54,8 +68,8 @@ function Description({ route, navigation }: any): JSX.Element {
                 uri: `${imageUrl}${image}`,
               }}
               style={{
-                width: 130,
-                height: 120,
+                width: 180,
+                height: 180,
                 alignSelf: "center",
                 justifyContent: "center",
               }}
@@ -123,8 +137,8 @@ function Description({ route, navigation }: any): JSX.Element {
                 uri: `${imageUrl}${image}`,
               }}
               style={{
-                width: 130,
-                height: 120,
+                width: 255,
+                height: 225,
                 alignSelf: "center",
                 justifyContent: "center",
               }}
@@ -132,9 +146,21 @@ function Description({ route, navigation }: any): JSX.Element {
           </View>
         )}
       </SafeAreaProvider>
+      <Button title="-" onPress={() => sQuantity("-1")} />
+      <Text>{qte * price} € </Text>
+      <Button title="+" onPress={() => sQuantity("+1")} />
       <Button
         title="Ajouter au panier"
-        onPress={() => navigation.navigate("Panier")}
+        onPress={() =>
+          navigation.navigate("Panier", {
+            name: name,
+            qte: qte,
+            image: image,
+            total: qte * price,
+            snack: selectedSnack ? snack.find(() => selectedSnack).label : "",
+            drink: selectedDrink ? drink.find(() => selectedDrink).label : "",
+          })
+        }
       />
     </>
   );

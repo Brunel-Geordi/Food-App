@@ -55,7 +55,7 @@ function Command({ navigation, route }): JSX.Element {
                 width: 155,
                 borderRadius: 5,
               }}
-              onPress={() => navigation.navigate("Menu", {select: route.params?.option, name:product.name, image: product.image})}
+              onPress={() => navigation.navigate("Menu", {select: route.params?.option, name:product.name, image: product.image, price : product.price})}
             >
               <Text
                 style={{
