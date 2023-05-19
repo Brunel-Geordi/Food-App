@@ -1,39 +1,64 @@
-const express = require('express');
+require('dotenv').config(); 
+const express = require("express");
 const router = express.Router();
-const knex = require('knex')({
-  client: 'mysql2',
-  connection: {
-    host : 'localhost',
-    port : 3306,
-    user : 'root',
-    password : 'root',
-    database : 'malewa'
-  }
-});
-router.get('/', function(req, res){
-  knex
-    .select('*')
-    .from('users')
-    .then(result=>{
-      console.log(result)
-      res.send(result)
+const bcrypt = require("bcrypt");
+const knex = require('../knexSetup')
+const salt = bcrypt.genSaltSync(10);
+
+router.get("/", async (req, res) => {
+  await knex
+    .select("*")
+    .from("users")
+    .where("mail", req.query.mail)
+    .then((result) => {
+      if (result.length > 0) {
+        const secret = bcrypt.compareSync(
+          req.query.password,
+          result[0].password
+        );
+        if (secret) {
+          res.send(result);
+          return res
+        }
+      }  
+      res.status(401).send({ message: "Mail ou mot de passe incorrect" });
+      
     })
-    .catch({message : 'Erreur lors de l\' insertion dans users'})
+    .catch((error) => {
+      res
+        .status(500)
+        .send({ message: "Erreur lors de la récupération de l'utilisateur" });
+        console.log(error)
+    });
 });
 
-router.post('/', async (req, res) => {
-    knex('users')
-      .insert({
-        email : req.query.email,
-        name : req.query.name,
-        password : req.query.password
-      })
-      .then(result=>{
-        console.log(result)
-        res
-        .status(201)
-        .send({ message: "un user a été ajouté avec succès" });      })
-      .catch({message : 'Erreur'})
+router.post("/", async (req, res) => {
+  const password = bcrypt.hashSync(req.query.password, salt);
+  const token = bcrypt.hashSync((req.query.password + req.query.mail + new Date), salt);
+  const emailExists = await knex("users")
+    .select("id")
+    .where("mail", req.query.mail)
+    .first();
+
+  if (emailExists) {
+    return res.status(400).send({ message: "L'adresse email existe déjà" });
+  }
+
+  await knex("users")
+    .insert({
+      name: req.query.name,
+      mail: req.query.mail,
+      password: password,
+      token: token
+    })
+    .then((result) => {
+      console.log(result);
+      res.status(201).send({ message: "un user a été ajouté avec succès" });
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send({ message: "Une erreur est survenue lors de l'insertion dans la base de données" });
+    });
 });
 
 module.exports = router;

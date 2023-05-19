@@ -1,4 +1,4 @@
-/* 
+/*
  *      _______         __         ___        ____   ______     __      ___
  *    /   _____|      /    \      |   \      /    | |   __  \  |  |   /     \
  *   /   /           /  /\  \     |    \    /     | |  |__|  | |  |  /   _   \
@@ -25,35 +25,39 @@ import Drawer from "./drawerscreen";
 import Panier from "../components/panier";
 import Tabnav from "./tabscreen";
 import Description from "../components/product_description";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { createStackNavigator } from "@react-navigation/stack";
 
 function Screen(): JSX.Element {
   const Stack = createNativeStackNavigator();
+  const Modal = createStackNavigator();
+
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
+      <Modal.Navigator>
+        <Modal.Screen
           name="Tabnav"
           component={Tabnav}
-          options={{ headerShown: false }}
+          options={{ headerShown: false}}
         />
-        <Stack.Screen
+        <Modal.Screen
           name="Panier"
           component={Panier}
-          options={{headerTitleAlign: "center"}}
+          options={{ headerTitleAlign: "center" }}
         />
-        <Stack.Screen
-          name="Menu"
-          component={Description}
-          options={{ presentation: "modal" }}
-          
-        />
-        <Stack.Screen
+
+        <Modal.Screen
           name="Drawer"
           component={Drawer}
           options={{ headerShown: false }}
         />
-      </Stack.Navigator>
+        <Modal.Group screenOptions={{presentation:"modal"}}>
+          <Modal.Screen
+            name="Menu"
+            component={Description}
+            options={{headerShown:false}}
+          />
+        </Modal.Group>
+      </Modal.Navigator>
     </NavigationContainer>
   );
 }

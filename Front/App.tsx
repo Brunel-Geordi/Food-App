@@ -1,4 +1,4 @@
-/* 
+/*
  *      _______         __         ___        ____   ______     __      ___
  *    /   _____|      /    \      |   \      /    | |   __  \  |  |   /     \
  *   /   /           /  /\  \     |    \    /     | |  |__|  | |  |  /   _   \
@@ -19,9 +19,12 @@
  */
 import React from "react";
 import Screen from "./screen/screencontainer";
+import Context from "./components/context";
 function App(): JSX.Element {
   return (
-    <Screen/>
+    <Context>
+      <Screen />
+    </Context>
   );
 }
 

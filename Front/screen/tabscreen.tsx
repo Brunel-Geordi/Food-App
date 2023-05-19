@@ -14,7 +14,7 @@
  *   \   \ _ |  |  |  |______   \        /   | |  \  \   |       /  |  |        | |__|  | | |  \  \ |   \__/   | |  | \    | |  |____  |  |____
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  */
-import React from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   Ionicons,
@@ -25,16 +25,18 @@ import Drawer from "./drawerscreen";
 import "react-native-gesture-handler";
 import Homescreen from "../components/Home";
 import Connexion from "../components/connexion";
+import Compte from "../components/compte";
 import { style } from "../style/style";
 import { Pressable } from "react-native";
+import { UserContext } from "../components/context";
 
 function Tabnav({ navigation }): JSX.Element {
   const Tab = createBottomTabNavigator();
+  const connected = useContext(UserContext)
   return (
     <Tab.Navigator
-      screenOptions={{ tabBarActiveTintColor: "#792D2D" }}
+      screenOptions={{ tabBarActiveTintColor: "#316CB2" }}
       sceneContainerStyle={{ backgroundColor: "#C8B1B1" }}
-      initialRouteName="Notre carte™"    
     >
       <Tab.Screen
         name="Home"
@@ -42,7 +44,7 @@ function Tabnav({ navigation }): JSX.Element {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-home" size={size} color={color} />
-          ),
+          ), 
           headerTitleAlign: "center",
         }}
       />
@@ -58,14 +60,14 @@ function Tabnav({ navigation }): JSX.Element {
               <FontAwesome5 name="shopping-basket" size={26} color="black" />
             </Pressable>
           ),
-          /*tabBarBadge: 3,*/ tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="food" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name={"Mon Compte"}
-        component={Connexion}
+        name={"Mon Compte"}  
+        component={!connected.token ? Connexion : Compte}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person-sharp" size={size} color={color} />

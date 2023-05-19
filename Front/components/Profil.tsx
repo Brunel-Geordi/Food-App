@@ -19,18 +19,15 @@
  */
 import React from "react";
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { style } from "../style/style";
 import { Text, View } from "react-native";
 
-function Homescreen({ navigation }: any): JSX.Element {
+function Profil({ navigation }: any): JSX.Element {
   return (
-    <>
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text style={{ color: "#316CB2", fontSize: 40, fontWeight:"bold" }}>Home Screen</Text>
         <MaterialCommunityIcons name="egg-fried" size={250} color="#316CB2" />
       </View>
-    </>
   );
 }
 
-export default Homescreen;
+export default Profil;

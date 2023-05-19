@@ -20,11 +20,13 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, Image, Text, View } from "react-native";
 import { getProduct, imageUrl } from "../services/get";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 function Command({ navigation, route }): JSX.Element {
   const [view, setView] = useState("");
-  const [products, setProduct] = useState<{id_bg: number; name: string, image: string, price: string}[]>([]);;
-  
+  const [products, setProduct] = useState<{id_bg: number; name: string, image: string, price: string}[]>([]);
+  const [loading, setLoading] = useState(products && products.length >= 0);
+
   useEffect(() => {
     setView(route);
     setAliment()
@@ -33,18 +35,20 @@ function Command({ navigation, route }): JSX.Element {
   const setAliment = async () => {
     const data = await getProduct(`${route.params?.option}`);
     setProduct(data)
+    setLoading(false)
   };
 
   return (
     <ScrollView horizontal={false}>
+      <Spinner visible={loading} textContent={'Chargement...'}/>
       {(products && products.length) > 0 && (
         <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-          }}
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}
         >
           {products.map((product) => (
             <TouchableOpacity
@@ -85,9 +89,10 @@ function Command({ navigation, route }): JSX.Element {
                   fontWeight: "bold",
                 }}
               >
-                {product.price} €
+                {(product.price)} €
               </Text>
             </TouchableOpacity>
+
           ))}
         </View>
       )}

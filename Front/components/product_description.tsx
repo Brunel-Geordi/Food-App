@@ -17,11 +17,19 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React, { useEffect, useState } from "react";
-import { Text, View, Button, Image } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { imageUrl, dropSelction } from "../services/get";
+import {setPanier} from "../services/post";
+import VirtualizedScrollView from "./test";
+import { UserContext } from "./context";
 
 function Description({ route, navigation }: any): JSX.Element {
   useEffect(() => {
@@ -30,11 +38,13 @@ function Description({ route, navigation }: any): JSX.Element {
 
   let [qte, setQuantity] = useState(1);
 
+  const user = useContext(UserContext);
+
   const { select, name, image, price } = route.params;
   const [selectedDrink, setSelectedDrink] = useState(null);
   const [openDrink, setOpenDrink] = useState(false);
   const [selectedSnack, setSelectedSnack] = useState(null);
-  const [label, setLabel] = useState(null);
+  // const [label, setLabel] = useState(null);
   const [openSnack, setOpenSnack] = useState(false);
 
   const [drink, setDrink] = useState([]);
@@ -50,31 +60,30 @@ function Description({ route, navigation }: any): JSX.Element {
     }
   };
   async function setOption() {
-    const selSnack = await dropSelction(`snack`);
+    const selSnack = await dropSelction(`option`);
     const selDrink = await dropSelction(`boisson`);
-    console.log(selDrink);
     setSnack(selSnack);
     setDrink(selDrink);
   }
 
   return (
-    <>
+    <SafeAreaProvider>
+    <TouchableOpacity><Text>X</Text></TouchableOpacity>
       <SafeAreaProvider>
         {select == "menu" ? (
           <SafeAreaProvider>
-            <Text>{name}</Text>
+            <Text style={{fontWeight: "bold", fontFamily: "", fontSize:25, textAlign:"center"}}>{name}</Text>
             <Image
               source={{
                 uri: `${imageUrl}${image}`,
               }}
               style={{
-                width: 180,
-                height: 180,
+                width: 160,
+                height: 160,
                 alignSelf: "center",
                 justifyContent: "center",
               }}
             />
-            <View style={{ margin: 10 }} />
             <DropDownPicker
               open={openDrink}
               value={selectedDrink}
@@ -91,8 +100,8 @@ function Description({ route, navigation }: any): JSX.Element {
                 }}
                 style={{
                   marginTop: 12,
-                  width: 140,
-                  height: 120,
+                  width: 110,
+                  height: 105,
                   alignSelf: "center",
                   justifyContent: "center",
                 }}
@@ -110,8 +119,8 @@ function Description({ route, navigation }: any): JSX.Element {
               placeholder="Choisir une snack"
               disabled={!selectedDrink}
               disabledStyle={{ opacity: 0.5 }}
-              zIndex={2000}
-              zIndexInverse={2000}
+              zIndex={1}
+              zIndexInverse={1}
               style={{ borderColor: "transparent" }}
             />
             {selectedDrink && (
@@ -121,8 +130,8 @@ function Description({ route, navigation }: any): JSX.Element {
                 }}
                 style={{
                   marginTop: 12,
-                  width: 170,
-                  height: 150,
+                  width: 150,
+                  height: 105,
                   alignSelf: "center",
                   justifyContent: "center",
                 }}
@@ -131,7 +140,7 @@ function Description({ route, navigation }: any): JSX.Element {
           </SafeAreaProvider>
         ) : (
           <View>
-            <Text>{name}</Text>
+            <Text style={{fontWeight: "bold", fontFamily: "", fontSize:25, textAlign:"center"}}>{name}</Text>
             <Image
               source={{
                 uri: `${imageUrl}${image}`,
@@ -146,23 +155,77 @@ function Description({ route, navigation }: any): JSX.Element {
           </View>
         )}
       </SafeAreaProvider>
-      <Button title="-" onPress={() => sQuantity("-1")} />
-      <Text>{qte * price} € </Text>
-      <Button title="+" onPress={() => sQuantity("+1")} />
-      <Button
-        title="Ajouter au panier"
-        onPress={() =>
-          navigation.navigate("Panier", {
-            name: name,
-            qte: qte,
-            image: image,
-            total: qte * price,
-            snack: selectedSnack ? snack.find(() => selectedSnack).label : "",
-            drink: selectedDrink ? drink.find(() => selectedDrink).label : "",
-          })
-        }
-      />
-    </>
+      <SafeAreaView
+        style={{
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => sQuantity("-1")}
+            style={{
+              alignItems: "center",
+              width: 50,
+              height: 50,
+              justifyContent: "center",
+              borderRadius: 50,
+              marginBottom: 15,
+              borderColor: "#316CB2",
+              borderWidth: 4,
+            }}
+          >
+          <Text style={{fontWeight: "bold", fontSize:30}}> - </Text>
+          </TouchableOpacity>
+          <Text style={{fontWeight: "bold", fontSize:30, paddingBottom:20}}> {qte} </Text>
+          <TouchableOpacity
+            onPress={() => sQuantity("+1")}
+            style={{
+              alignItems: "center",
+              width: 50,
+              height: 50,
+              justifyContent: "center",
+              borderRadius: 50,
+              marginBottom: 15,
+              borderColor: "#316CB2",
+              borderWidth: 4,
+            }}
+          >
+          <Text style={{fontWeight: "bold", fontFamily: "", fontSize:30}} > + </Text>
+          </TouchableOpacity>
+        </View>
+        < TouchableOpacity
+          onPress={() =>{
+            if(!user.id_user){
+              return navigation.navigate("Mon Compte")
+            }
+            setPanier(name, qte, (selectedDrink ? drink.find((item) => item.value === selectedDrink).label : null), (selectedSnack ? snack.find((item) => item.value === selectedSnack).label : null),(new Date), ((qte * price).toFixed(2)), image, user.id_user);
+            navigation.navigate("Panier")
+          }
+          }
+          style={{
+            alignItems: "center",
+            backgroundColor: "#316CB2",
+            width: 250,
+            height: 50,
+            justifyContent: "center",
+            borderRadius: 8,
+            marginVertical: 5,
+          }}
+        >
+          <Text style={{ color: "white", fontWeight: "bold", fontFamily: "" }}>
+            Ajouter au panier
+          </Text>
+          <Text style={{ color: "white", fontWeight: "bold", fontFamily: "" }}>
+            {(qte * price).toFixed(2)} €
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 export default Description;

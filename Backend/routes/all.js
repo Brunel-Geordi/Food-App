@@ -6,15 +6,9 @@ const boissonRouter = require('./boisson');
 const snackRouter = require('./snacks');
 const dessertRouter = require('./dessert');
 const menuRouter = require('./menu');
+const panierRouter = require('./panier');
+const optionRouter = require('./option');
 
-
-
-router
-    // .use(usersRouter)    
-    .use(burgersRouter)
-    .use(snackRouter)
-    .use(boissonRouter)
-    .use(dessertRouter)
 
 module.exports = {
     all : router,
@@ -22,7 +16,9 @@ module.exports = {
     boisson : boissonRouter,
     snack : snackRouter,
     dessert : dessertRouter,
+    option : optionRouter,
     menu : menuRouter,
     dessert : dessertRouter,
+    panier : panierRouter,
 };
 

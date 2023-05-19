@@ -17,20 +17,43 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React from "react";
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import { style } from "../style/style";
+import React, { useState, useContext, createContext, useEffect } from "react";
 import { Text, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Command from "./command";
 
-function Homescreen({ navigation }: any): JSX.Element {
+export const UserContext = createContext(null);
+function Context(props): JSX.Element {
+  const [token, setToken] = useState(null);
+  const [id_user, setID] = useState(null);
+  const [name, setName] = useState(null);
+
+  useEffect(() => {
+    const storage = async () => {
+      try {
+        if (token && name && name) {
+          await AsyncStorage.setItem("token", token);
+          await AsyncStorage.setItem("user", String(id_user));
+          await AsyncStorage.setItem("name", String(name));
+          return;
+        }
+        const _token = await AsyncStorage.getItem("token");
+        const _user = await AsyncStorage.getItem("user");
+        const _name = await AsyncStorage.getItem("name");
+        setToken(_token);
+        setID(_user);
+        setName(_name);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    storage();
+  }, [token, id_user, name]);
+
   return (
-    <>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text style={{ color: "#316CB2", fontSize: 40, fontWeight:"bold" }}>Home Screen</Text>
-        <MaterialCommunityIcons name="egg-fried" size={250} color="#316CB2" />
-      </View>
-    </>
+    <UserContext.Provider value={{ token, setToken, id_user, setID, name, setName }}>
+      {props.children}
+    </UserContext.Provider>
   );
 }
-
-export default Homescreen;
+export default Context;

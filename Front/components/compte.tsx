@@ -1,4 +1,4 @@
-/* 
+/*
  *      _______         __         ___        ____   ______     __      ___
  *    /   _____|      /    \      |   \      /    | |   __  \  |  |   /     \
  *   /   /           /  /\  \     |    \    /     | |  |__|  | |  |  /   _   \
@@ -17,29 +17,50 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React, { useRef } from "react";
-import {
-  Text,
-  Button,
-  Alert
-} from "react-native";
+import React, { useContext, useRef, useState } from "react";
+import { Text, Button, TouchableOpacity, View } from "react-native";
+import Spinner from "react-native-loading-spinner-overlay/lib";
 import { style } from "../style/style";
 import Connexion from "./connexion";
+import { UserContext } from "./context";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function Compte({ navigation }: any): JSX.Element {
+  const connected = useContext(UserContext);
+  // const [loading, setLoading] = useState(connected.name && connected.token && connected.id_user)
+
+  const disconnect = async () => {
+    connected.setToken(null);
+    connected.setID(null);
+    connected.setName(null);
+    await AsyncStorage.removeItem('token')
+    await AsyncStorage.removeItem('user')
+    await AsyncStorage.removeItem('name')
+  };
   return (
-    <>
-        <Text>Je suis la page de parametrage</Text>
-        <Button
-        title="Me connecter"
-        onPress={() => Connexion(true)}    
-        accessibilityLabel="Learn more about this purple button"
-        />
-        <Button
-        title="M'inscrire"
-        onPress={() => Connexion(false)}    
-        />
-    </>
+    <View>
+    {/* <Spinner visible={loading} textContent={'Chargement...'} /> */}
+      <Text>Bienvenu {connected.name}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          disconnect();
+        }}
+        style={{
+          alignItems: "center",
+          backgroundColor: "#316CB2",
+          width: 100,
+          height: 50,
+          justifyContent: "center",
+          borderRadius: 8,
+          marginVertical: 5,
+        }}
+      >
+        <Text style={{ color: "white", fontWeight: "bold", fontFamily: "" }}>
+          Deconnecter
+        </Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 

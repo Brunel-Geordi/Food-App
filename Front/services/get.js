@@ -1,5 +1,5 @@
-export const apiUrl = "http://192.168.53.67:5000/";
-export const imageUrl = "http://192.168.53.67:5000/image/";
+export const apiUrl = "http://192.168.179.67:5000/";
+export const imageUrl = "http://192.168.179.67:5000/image/";
 
 export const getProduct = async (source) => {
   try {
@@ -10,6 +10,8 @@ export const getProduct = async (source) => {
     console.log(error);
   }
 };
+
+
 export const dropSelction = async (point) => {
   try {
     const selection = await fetch(`${apiUrl}${point}`);
