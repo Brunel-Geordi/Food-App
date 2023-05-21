@@ -136,12 +136,10 @@ function Compte({ navigation }: any): JSX.Element {
               <Text>Add Image</Text>
             </TouchableOpacity>
             {values.photo && (
-              <>
               <Image
                 source={{ uri: values.photo }}
                 style={{ width: 200, height: 200 }}
               />
-              </>
             )}
             {errors.photo && touched.photo && (
               <Text style={{ color: "red" }}>{errors.photo}</Text>

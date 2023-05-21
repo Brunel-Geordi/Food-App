@@ -11,6 +11,7 @@ import { SafeAreaView, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import SignUp from "./signup";
 import Login from "./login";
+import { style } from "../style/style";
 function Connexion({ navigation }: any): JSX.Element {
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -31,22 +32,24 @@ function Connexion({ navigation }: any): JSX.Element {
       {!selectedOption ? (
         <SafeAreaView>
           <Login />
-          <Text>Pas encore de compte ?</Text>
-          <TouchableOpacity onPress={signUp}>
-            <Text
-              style={{
-                color: "blue",
-                fontStyle: "italic",
-              }}
-            >
-              cliquez ici
-            </Text>
-          </TouchableOpacity>
+          <View style={style.sign}>
+            <Text>Pas encore de compte ?</Text>
+            <TouchableOpacity onPress={signUp}>
+              <Text
+                style={{
+                  color: "blue",
+                  fontStyle: "italic",
+                }}
+              >
+                cliquez ici
+              </Text>
+            </TouchableOpacity>
+          </View>
         </SafeAreaView>
       ) : (
         <SafeAreaView>
-          <View style={{ margin: 30 }}>
-            <SignUp/>
+          <SignUp />
+          <View style={style.sign}>
             <Text>Déjà un Compte ?</Text>
             <TouchableOpacity onPress={signIn}>
               <Text

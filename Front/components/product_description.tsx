@@ -29,7 +29,6 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import {dropSelction } from "../services/get";
 import { imageUrl } from "../services/api";
 import {setPanier} from "../services/post";
-import VirtualizedScrollView from "./test";
 import { UserContext } from "./context";
 
 function Description({ route, navigation }: any): JSX.Element {

@@ -31,7 +31,7 @@ export const CustomInput = (props: { [x: string]: any; field: { name: any; onBlu
   )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '100%',
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 12,
     color: 'red',
+    fontStyle: "italic"
   },
   errorInput: {
     borderColor: 'red',
