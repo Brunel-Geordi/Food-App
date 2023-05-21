@@ -1,3 +1,4 @@
+import { apiUrl } from "./api";
 export const detetePanier = async(point) => {
     try {
       const selection = await fetch(`${apiUrl}${point}`);

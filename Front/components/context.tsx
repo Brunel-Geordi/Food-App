@@ -18,12 +18,25 @@
  *
  */
 import React, { useState, useContext, createContext, useEffect } from "react";
-import { Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Command from "./command";
+import { getUsers } from "../services/get";
 
 export const UserContext = createContext(null);
-function Context(props): JSX.Element {
+
+export const getUser = async (mail: string, pass: string, connected: any) => {
+  const user = await getUsers(mail, pass);
+  if (!user.hasOwnProperty('message')){
+    const token = user.map((us: { token: String }) => us.token);
+    const id = user.map((us: { id: String }) => us.id);
+    const name = user.map((us: { name: String }) => us.name);
+    connected.setToken(token[0]);
+    connected.setID(id);
+    connected.setName(name[0]);
+    return
+  }
+};
+
+function Context(props: { children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal; }): JSX.Element {
   const [token, setToken] = useState(null);
   const [id_user, setID] = useState(null);
   const [name, setName] = useState(null);

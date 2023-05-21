@@ -26,38 +26,38 @@ import Panier from "../components/panier";
 import Tabnav from "./tabscreen";
 import Description from "../components/product_description";
 import { createStackNavigator } from "@react-navigation/stack";
+import Connexion from "../components/connexion";
 
 function Screen(): JSX.Element {
-  const Stack = createNativeStackNavigator();
-  const Modal = createStackNavigator();
+  // const Stack = createNativeStackNavigator();
+  const Stack = createStackNavigator();
 
   return (
     <NavigationContainer>
-      <Modal.Navigator>
-        <Modal.Screen
+      <Stack.Navigator>
+        <Stack.Screen
           name="Tabnav"
           component={Tabnav}
           options={{ headerShown: false}}
         />
-        <Modal.Screen
+        <Stack.Screen
           name="Panier"
           component={Panier}
           options={{ headerTitleAlign: "center" }}
         />
-
-        <Modal.Screen
+        <Stack.Screen
           name="Drawer"
           component={Drawer}
           options={{ headerShown: false }}
         />
-        <Modal.Group screenOptions={{presentation:"modal"}}>
-          <Modal.Screen
+        <Stack.Group screenOptions={{presentation:"modal"}}>
+          <Stack.Screen
             name="Menu"
             component={Description}
             options={{headerShown:false}}
           />
-        </Modal.Group>
-      </Modal.Navigator>
+        </Stack.Group>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

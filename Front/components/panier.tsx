@@ -27,7 +27,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { apiUrl, imageUrl } from "../services/get";
+import { apiUrl, imageUrl } from "../services/api";
 import { EvilIcons } from "@expo/vector-icons";
 import Spinner from 'react-native-loading-spinner-overlay';
 import { UserContext } from "./context";
@@ -69,14 +69,14 @@ function Panier({ navigation }: any): JSX.Element {
         }
       );
       if (response.ok) {
-        await getProduct(); // mettre à jour les données du panier
-        return true; // indiquer que la suppression a réussi
+        await getProduct(); 
+        return true; 
       } else {
         throw new Error("Impossible de supprimer le panier");
       }
     } catch (error) {
       console.log(error);
-      return false; // indiquer que la suppression a échoué
+      return false;
     }
   };
 
@@ -91,6 +91,7 @@ function Panier({ navigation }: any): JSX.Element {
               style={{
                 flexDirection: "row",
                 backgroundColor: "#E8E2E2",
+                marginTop: 5
               }}
               key={produit.id}
             >
@@ -140,7 +141,7 @@ function Panier({ navigation }: any): JSX.Element {
                       fontWeight: "bold",
                     }}
                   >
-                    {produit.qte} X
+                   : {produit.qte} 
                   </Text>
                   <Text
                     style={{
@@ -150,7 +151,7 @@ function Panier({ navigation }: any): JSX.Element {
                   >
                     {produit.name}
                   </Text>
-                  {!produit.boisson && !produit.snack && (
+                  {produit.boisson && produit.snack && (
                     <>
                       <Text
                         style={{
@@ -166,7 +167,7 @@ function Panier({ navigation }: any): JSX.Element {
                           fontWeight: "500",
                         }}
                       >
-                        {produit.drink}
+                        {produit.boisson}
                       </Text>
                     </>
                   )}

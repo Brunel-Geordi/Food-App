@@ -16,16 +16,22 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  var option = req.query.snack;
+  var boisson = req.query.boisson;
+  if (boisson == "null" && option == "null") {
+    boisson = null;
+    option = null;
+  }
   await knex("panier")
     .insert({
       montant: req.query.montant,
-      datetime: req.query.datetime,
+      datetime: knex.fn.now(),
       qte: req.query.qte,
       name: req.query.name,
-      boisson: req.query.boisson,
-      snack: req.query.snack,
+      boisson: boisson,
+      snack: option,
       image: req.query.image,
-      id_users: req.query.id_users
+      id_users: req.query.id_users,
     })
     .then((result) => {
       console.log(result);
@@ -47,6 +53,12 @@ router.delete("/", async (req, res) => {
 });
 
 router.put("/", async (req, res) => {
+  var option = req.query.snack;
+  var boisson = req.query.boisson;
+  if (boisson == "null" && option == "null") {
+    boisson = null;
+    option = null;
+  }
   await knex("panier")
     .where("id", req.query.id)
     .update({
@@ -54,8 +66,8 @@ router.put("/", async (req, res) => {
       datetime: req.query.datetime,
       qte: req.query.qte,
       name: req.query.name,
-      boisson: req.query.boisson,
-      snack: req.query.snack,
+      boisson: boisson,
+      snack: option,
       image: req.query.image,
     })
     .then((result) => {

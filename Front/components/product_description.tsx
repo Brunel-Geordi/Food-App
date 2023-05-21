@@ -26,7 +26,8 @@ import {
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { imageUrl, dropSelction } from "../services/get";
+import {dropSelction } from "../services/get";
+import { imageUrl } from "../services/api";
 import {setPanier} from "../services/post";
 import VirtualizedScrollView from "./test";
 import { UserContext } from "./context";
@@ -203,7 +204,7 @@ function Description({ route, navigation }: any): JSX.Element {
             if(!user.id_user){
               return navigation.navigate("Mon Compte")
             }
-            setPanier(name, qte, (selectedDrink ? drink.find((item) => item.value === selectedDrink).label : null), (selectedSnack ? snack.find((item) => item.value === selectedSnack).label : null),(new Date), ((qte * price).toFixed(2)), image, user.id_user);
+            setPanier(name, qte, (selectedDrink ? drink.find((item) => item.value === selectedDrink).label : null), (selectedSnack ? snack.find((item) => item.value === selectedSnack).label : null), ((qte * price).toFixed(2)), image, user.id_user);
             navigation.navigate("Panier")
           }
           }

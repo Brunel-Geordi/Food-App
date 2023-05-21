@@ -19,7 +19,8 @@
  */
 import React, { useEffect, useState } from "react";
 import { ScrollView, TouchableOpacity, Image, Text, View } from "react-native";
-import { getProduct, imageUrl } from "../services/get";
+import { getProduct} from "../services/get";
+import { imageUrl } from "../services/api";
 import Spinner from 'react-native-loading-spinner-overlay';
 
 function Command({ navigation, route }): JSX.Element {

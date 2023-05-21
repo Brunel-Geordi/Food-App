@@ -1,5 +1,4 @@
-export const apiUrl = "http://192.168.179.67:5000/";
-export const imageUrl = "http://192.168.179.67:5000/image/";
+import { apiUrl } from "./api";
 
 export const getProduct = async (source) => {
   try {
@@ -21,6 +20,18 @@ export const dropSelction = async (point) => {
       value: product.image,
     }));
     return newOptions;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getUsers = async (mail, pass) => {
+  try {
+    const response = await fetch(
+      `${apiUrl}login?&mail=${mail}&password=${pass}`
+    );
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.log(error);
   }

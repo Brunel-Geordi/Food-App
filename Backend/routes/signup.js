@@ -5,33 +5,6 @@ const bcrypt = require("bcrypt");
 const knex = require('../knexSetup')
 const salt = bcrypt.genSaltSync(10);
 
-router.get("/", async (req, res) => {
-  await knex
-    .select("*")
-    .from("users")
-    .where("mail", req.query.mail)
-    .then((result) => {
-      if (result.length > 0) {
-        const secret = bcrypt.compareSync(
-          req.query.password,
-          result[0].password
-        );
-        if (secret) {
-          res.send(result);
-          return res
-        }
-      }  
-      res.status(401).send({ message: "Mail ou mot de passe incorrect" });
-      
-    })
-    .catch((error) => {
-      res
-        .status(500)
-        .send({ message: "Erreur lors de la récupération de l'utilisateur" });
-        console.log(error)
-    });
-});
-
 router.post("/", async (req, res) => {
   const password = bcrypt.hashSync(req.query.password, salt);
   const token = bcrypt.hashSync((req.query.password + req.query.mail + new Date), salt);
