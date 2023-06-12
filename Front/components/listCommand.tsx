@@ -17,19 +17,35 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { useEffect, useState, useContext } from "react";
 import { Text, View } from "react-native";
+import { getList } from "../services/get";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native-gesture-handler";
+import { UserContext } from "./context";
 
-function Homescreen({ navigation }: any): JSX.Element {
+function List({ navigation }: any): JSX.Element {
+  const [data, setData] = useState([]);
+  const connected = useContext(UserContext)
+  useEffect(() => {
+    getData();
+  }, [data.length]);
+  const getData = async () => {
+    const dataList = await getList(connected.id_user);
+    setData(dataList);
+  };
   return (
-    <>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text style={{ color: "#316CB2", fontSize: 40, fontWeight:"bold" }}>Home Screen</Text>
-        <MaterialCommunityIcons name="egg-fried" size={250} color="#316CB2" />
-      </View>
-    </>
+    <SafeAreaProvider>
+      <SafeAreaView style={{alignItems: "center", justifyContent: "center" }}>
+        {data.length > 0 &&
+          data.map((list) => (
+            <ScrollView key={list.id}>
+              <Text>{list.name}</Text>
+            </ScrollView>
+          ))}
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
-export default Homescreen;
+export default List;

@@ -31,7 +31,7 @@ function Command({ navigation, route }): JSX.Element {
   useEffect(() => {
     setView(route);
     setAliment()
-  }, []);
+  }, [route]);
   
   const setAliment = async () => {
     const data = await getProduct(`${route.params?.option}`);

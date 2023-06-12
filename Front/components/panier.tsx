@@ -23,27 +23,40 @@ import {
   Button,
   Image,
   View,
-  SafeAreaView,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
 import { apiUrl, imageUrl } from "../services/api";
 import { EvilIcons } from "@expo/vector-icons";
-import Spinner from 'react-native-loading-spinner-overlay';
+import Spinner from "react-native-loading-spinner-overlay";
 import { UserContext } from "./context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import Card from "./paiement";
+import { number } from "yup";
 
 function Panier({ navigation }: any): JSX.Element {
   const [panier, setPanier] = useState([]);
   const [loading, setLoading] = useState(panier.length >= 0);
-  const user = useContext(UserContext)
-
+  const [view, setView] = useState(false);
+  const user = useContext(UserContext);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
+    somme();
     getProduct();
-    setLoading(false)
-  }, []);
+    setLoading(false);
+  }, [panier.length]);
 
-  const token = useContext(UserContext)
+  const somme = () => {
+    if (panier.length > 0) {
+      const sumValue = panier.reduce(
+        (price, total) => price + parseFloat(total.montant),
+        0
+      );
+      setTotal(sumValue);
+    }
+  };
+  const token = useContext(UserContext);
   const getProduct = async () => {
     try {
       detetePanier;
@@ -58,19 +71,16 @@ function Panier({ navigation }: any): JSX.Element {
 
   const detetePanier = async (idPanier: Number) => {
     try {
-      const response = await fetch(
-        `${apiUrl}panier?id=${idPanier}`,
-        {
-          method: "DELETE",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${apiUrl}panier?id=${idPanier}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
       if (response.ok) {
-        await getProduct(); 
-        return true; 
+        await getProduct();
+        return true;
       } else {
         throw new Error("Impossible de supprimer le panier");
       }
@@ -81,113 +91,166 @@ function Panier({ navigation }: any): JSX.Element {
   };
 
   return (
-    <ScrollView>
-      <Button title="Home" onPress={() => navigation.navigate("Home")} />
-      <Spinner visible={loading} textContent={'Chargement...'}/>
-      {token.token && panier && panier.length > 0 ? (
-        <View>
-          {panier.map((produit) => (
-            <View
-              style={{
-                flexDirection: "row",
-                backgroundColor: "#E8E2E2",
-                marginTop: 5
-              }}
-              key={produit.id}
-            >
-              <TouchableOpacity
-                style={{
-                  backgroundColor: "blue",
-                  width: 50,
-                  justifyContent: "center",
-                }}
-                onPress={() => detetePanier(produit.id)}
-              >
-                <EvilIcons
-                  name="trash"
-                  size={45}
-                  color="red"
-                  style={{ alignSelf: "center" }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  flexDirection: "row",
-                  backgroundColor: "#E8E2E2",
-                  justifyContent: "center",
-                  paddingVertical: 8,
-                }}
-              >
-                <Image
-                  source={{
-                    uri: `${imageUrl}${produit.image}`,
-                  }}
-                  style={{
-                    width: 100,
-                    height: 100,
-                    alignItems: "center",
-                    alignContent: "center",
-                    marginEnd: 15,
-                  }}
-                />
+    <>
+      <SafeAreaProvider style={{ flex: 1 }}>
+        <Spinner visible={loading} textContent={"Chargement..."} />
+        {token.token && panier && panier.length > 0 ? (
+          <SafeAreaProvider>
+            <Button
+              title="Commander de nouveau"
+              onPress={() => navigation.navigate("Notre carte™")}
+            />
+            <ScrollView>
+              {panier.map((produit) => (
                 <View
                   style={{
-                    justifyContent: "center",
+                    flexDirection: "row",
+                    backgroundColor: "#E8E2E2",
+                    marginTop: 5,
+                  }}
+                  key={produit.id}
+                >
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: "#316CB2",
+                      width: 50,
+                      justifyContent: "center",
+                    }}
+                    onPress={() => detetePanier(produit.id)}
+                  >
+                    <EvilIcons
+                      name="trash"
+                      size={45}
+                      color="red"
+                      style={{ alignSelf: "center" }}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      backgroundColor: "#E8E2E2",
+                      justifyContent: "center",
+                      paddingVertical: 8,
+                    }}
+                  >
+                    <Image
+                      source={{
+                        uri: `${imageUrl}${produit.image}`,
+                      }}
+                      style={{
+                        width: 100,
+                        height: 100,
+                        alignItems: "center",
+                        alignContent: "center",
+                        marginEnd: 15,
+                      }}
+                    />
+                    <View
+                      style={{
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 17,
+                          fontWeight: "bold",
+                        }}
+                      >
+                        : {produit.qte}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 17,
+                          fontWeight: "500",
+                        }}
+                      >
+                        {produit.name}
+                      </Text>
+                      {produit.boisson && produit.snack && (
+                        <>
+                          <Text
+                            style={{
+                              fontSize: 17,
+                              fontWeight: "500",
+                            }}
+                          >
+                            {produit.snack}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 17,
+                              fontWeight: "500",
+                            }}
+                          >
+                            {produit.boisson}
+                          </Text>
+                        </>
+                      )}
+                      <Text
+                        style={{
+                          fontSize: 17,
+                          fontWeight: "500",
+                        }}
+                      >
+                        Sous - Total : {produit.montant} €
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ))}
+            </ScrollView>
+            <View style={{ alignItems: "center", borderTopWidth: 2 }}>
+              <TouchableOpacity
+                style={{
+                  alignItems: "center",
+                  backgroundColor: "#316CB2",
+                  width: 250,
+                  height: 50,
+                  justifyContent: "center",
+                  borderRadius: 8,
+                  marginVertical: 5,
+                }}
+                onPress={() => setView(true)}
+              >
+                <Text
+                  style={{ color: "white", fontWeight: "900", fontSize: 17 }}
+                >
+                  Passer la commande
+                </Text>
+                <Text
+                  style={{
+                    color: "white",
+                    fontWeight: "900",
+                    fontSize: 17,
                   }}
                 >
-                  <Text
-                    style={{
-                      fontSize: 17,
-                      fontWeight: "bold",
-                    }}
-                  >
-                   : {produit.qte} 
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 17,
-                      fontWeight: "500",
-                    }}
-                  >
-                    {produit.name}
-                  </Text>
-                  {produit.boisson && produit.snack && (
-                    <>
-                      <Text
-                        style={{
-                          fontSize: 17,
-                          fontWeight: "500",
-                        }}
-                      >
-                        {produit.snack}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 17,
-                          fontWeight: "500",
-                        }}
-                      >
-                        {produit.boisson}
-                      </Text>
-                    </>
-                  )}
-                  <Text
-                    style={{
-                      fontSize: 17,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Sous - Total : {produit.montant} €
-                  </Text>
-                </View>
+                  {total} €
+                </Text>
               </TouchableOpacity>
             </View>
-          ))}
-        </View>
-      ) : (
-        <Text>Panier vide</Text>
+          </SafeAreaProvider>
+        ) : (
+          <View style={{ flex: 1, alignSelf: "center" }}>
+            <TouchableOpacity
+              style={{ alignItems: "center" }}
+              onPress={() => navigation.navigate("Notre carte™")}
+            >
+              <Text style={{}}>Passer une commande</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </SafeAreaProvider>
+      {view && (
+        <Card
+          navigation={navigation}
+          view={view}
+          closeView={() => setView(false)}
+          sum={total}
+          list={panier}
+          clear={() => setPanier(null)}
+        />
       )}
-    </ScrollView>
+    </>
   );
 }
 export default Panier;

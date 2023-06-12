@@ -16,9 +16,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Pressable,
 } from "react-native";
-import { UserContext, getUser } from "./context";
+import { UserContext} from "./context";
 function Login({ navigation }: any): JSX.Element {
   const connected = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(true);
@@ -44,7 +43,7 @@ function Login({ navigation }: any): JSX.Element {
             validationSchema={loginValidationSchema}
             initialValues={{ email: "", password: "" }}
             onSubmit={(values) =>
-              getUser(values.email, values.password, connected)
+              connected.getUser(values.email, values.password)
             }
           >
             {({
@@ -62,7 +61,6 @@ function Login({ navigation }: any): JSX.Element {
                   component={CustomInput}
                   placeholder=" Entrez votre adresse mail "
                   style={style.inputText}
-                  value={values.email}
                   keyboardType="email-address"
                 />
                 <Text style={style.text}>Mot de passe </Text>
@@ -104,7 +102,6 @@ function Login({ navigation }: any): JSX.Element {
                     style={{
                       color: "white",
                       fontWeight: "bold",
-                      fontFamily: "",
                       fontSize: 20,
                     }}
                   >

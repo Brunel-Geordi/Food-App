@@ -18,13 +18,13 @@ import { TextInput } from "react-native-gesture-handler";
 function SignUp({ navigation }: any): JSX.Element {
   const connected = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(true);
-  const [showPassword1, setShowPassword1] = useState(true);
+  const [showConfirmation, setShowConfirmation] = useState(true);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
   const togglePasswordVisibility1 = () => {
-    setShowPassword1(!showPassword1);
+    setShowConfirmation(!showConfirmation);
   };
   return (
     <>
@@ -68,7 +68,6 @@ function SignUp({ navigation }: any): JSX.Element {
                   style={style.inputText}
                   component={CustomInput}
                   name="name"
-                  value={values.name}
                 />
                 <Text style={style.text}>Adresse mail </Text>
                 <Field
@@ -82,11 +81,12 @@ function SignUp({ navigation }: any): JSX.Element {
                 <Text style={style.text}>Mot de passe </Text>
                 <View style={style.container}>
                   <TextInput
-                    placeholder="Entrez votre mot de passe       "
+                    placeholder="Entrez votre mot de passe"
                     onChangeText={handleChange("password")}
                     onBlur={handleBlur("password")}
                     value={values.password}
                     secureTextEntry={showPassword}
+                    maxLength={50}
                   />
                   <TouchableOpacity
                     onPress={() => togglePasswordVisibility()}
@@ -108,14 +108,15 @@ function SignUp({ navigation }: any): JSX.Element {
                     onChangeText={handleChange("confirmPassword")}
                     onBlur={handleBlur("confirmPassword")}
                     value={values.confirmPassword}
-                    secureTextEntry={showPassword1}
+                    secureTextEntry={showConfirmation}
+                    maxLength={50}
                   />
                   <TouchableOpacity
                     onPress={() => togglePasswordVisibility1()}
                     style={style.eyeIcon}
                   >
                     <Entypo
-                      name={showPassword1 ? "eye" : "eye-with-line"}
+                      name={showConfirmation ? "eye" : "eye-with-line"}
                       size={25}
                     />
                   </TouchableOpacity>
@@ -140,7 +141,6 @@ function SignUp({ navigation }: any): JSX.Element {
                     style={{
                       color: "white",
                       fontWeight: "bold",
-                      fontFamily: "",
                       fontSize: 20,
                     }}
                   >

@@ -18,18 +18,15 @@
  *
  */
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import {dropSelction } from "../services/get";
+import { dropSelction } from "../services/get";
 import { imageUrl } from "../services/api";
-import {setPanier} from "../services/post";
+import { setPanier } from "../services/post";
 import { UserContext } from "./context";
+import Command from "./command";
 
 function Description({ route, navigation }: any): JSX.Element {
   useEffect(() => {
@@ -40,11 +37,10 @@ function Description({ route, navigation }: any): JSX.Element {
 
   const user = useContext(UserContext);
 
-  const { select, name, image, price } = route.params;
+  const {select, name, image, price } = route.params;
   const [selectedDrink, setSelectedDrink] = useState(null);
   const [openDrink, setOpenDrink] = useState(false);
   const [selectedSnack, setSelectedSnack] = useState(null);
-  // const [label, setLabel] = useState(null);
   const [openSnack, setOpenSnack] = useState(false);
 
   const [drink, setDrink] = useState([]);
@@ -61,18 +57,30 @@ function Description({ route, navigation }: any): JSX.Element {
   };
   async function setOption() {
     const selSnack = await dropSelction(`option`);
-    const selDrink = await dropSelction(`boisson`);
+    const selDrink = await dropSelction(`boissons`);
     setSnack(selSnack);
     setDrink(selDrink);
   }
 
   return (
     <SafeAreaProvider>
-    <TouchableOpacity><Text>X</Text></TouchableOpacity>
+      <SafeAreaView>
+        <TouchableOpacity style={{ paddingEnd: 15, alignItems: "flex-end", paddingTop: 10 }} onPress={() => navigation.navigate("Notre carte™")}>
+        <MaterialIcons name="cancel" size={30} color="black" />        
+        </TouchableOpacity>
+      </SafeAreaView>
       <SafeAreaProvider>
-        {select == "menu" ? (
+        {select === "menus" ? (
           <SafeAreaProvider>
-            <Text style={{fontWeight: "bold", fontFamily: "", fontSize:25, textAlign:"center"}}>{name}</Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 25,
+                textAlign: "center",
+              }}
+            >
+              {name}
+            </Text>
             <Image
               source={{
                 uri: `${imageUrl}${image}`,
@@ -90,7 +98,7 @@ function Description({ route, navigation }: any): JSX.Element {
               items={drink}
               setOpen={setOpenDrink}
               setValue={setSelectedDrink}
-              placeholder="Choisir une boison"
+              placeholder="Choisir une boisson"
               style={{ borderColor: "transparent" }}
             />
             {selectedDrink && (
@@ -116,7 +124,7 @@ function Description({ route, navigation }: any): JSX.Element {
               items={snack}
               setOpen={setOpenSnack}
               setValue={setSelectedSnack}
-              placeholder="Choisir une snack"
+              placeholder="Choisir un accompagnement"
               disabled={!selectedDrink}
               disabledStyle={{ opacity: 0.5 }}
               zIndex={1}
@@ -140,7 +148,15 @@ function Description({ route, navigation }: any): JSX.Element {
           </SafeAreaProvider>
         ) : (
           <View>
-            <Text style={{fontWeight: "bold", fontFamily: "", fontSize:25, textAlign:"center"}}>{name}</Text>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 25,
+                textAlign: "center",
+              }}
+            >
+              {name}
+            </Text>
             <Image
               source={{
                 uri: `${imageUrl}${image}`,
@@ -179,9 +195,12 @@ function Description({ route, navigation }: any): JSX.Element {
               borderWidth: 4,
             }}
           >
-          <Text style={{fontWeight: "bold", fontSize:30}}> - </Text>
+            <Text style={{ fontWeight: "bold", fontSize: 30 }}> - </Text>
           </TouchableOpacity>
-          <Text style={{fontWeight: "bold", fontSize:30, paddingBottom:20}}> {qte} </Text>
+          <Text style={{ fontWeight: "bold", fontSize: 30, paddingBottom: 20 }}>
+            {" "}
+            {qte}{" "}
+          </Text>
           <TouchableOpacity
             onPress={() => sQuantity("+1")}
             style={{
@@ -195,18 +214,32 @@ function Description({ route, navigation }: any): JSX.Element {
               borderWidth: 4,
             }}
           >
-          <Text style={{fontWeight: "bold", fontFamily: "", fontSize:30}} > + </Text>
+            <Text style={{ fontWeight: "bold", fontSize: 30 }}>
+              {" "}
+              +{" "}
+            </Text>
           </TouchableOpacity>
         </View>
-        < TouchableOpacity
-          onPress={() =>{
-            if(!user.id_user){
-              return navigation.navigate("Mon Compte")
+        <TouchableOpacity
+          onPress={() => {
+            if (!user.id_user) {
+              return navigation.navigate("Mon Compte");
             }
-            setPanier(name, qte, (selectedDrink ? drink.find((item) => item.value === selectedDrink).label : null), (selectedSnack ? snack.find((item) => item.value === selectedSnack).label : null), ((qte * price).toFixed(2)), image, user.id_user);
-            navigation.navigate("Panier")
-          }
-          }
+            setPanier(
+              name,
+              qte,
+              selectedDrink
+                ? drink.find((item) => item.value === selectedDrink).label
+                : null,
+              selectedSnack
+                ? snack.find((item) => item.value === selectedSnack).label
+                : null,
+              (qte * price).toFixed(2),
+              image,
+              user.id_user
+            );
+            navigation.navigate("Panier");
+          }}
           style={{
             alignItems: "center",
             backgroundColor: "#316CB2",
@@ -217,10 +250,10 @@ function Description({ route, navigation }: any): JSX.Element {
             marginVertical: 5,
           }}
         >
-          <Text style={{ color: "white", fontWeight: "bold", fontFamily: "" }}>
+          <Text style={{ color: "white", fontWeight: "bold"}}>
             Ajouter au panier
           </Text>
-          <Text style={{ color: "white", fontWeight: "bold", fontFamily: "" }}>
+          <Text style={{ color: "white", fontWeight: "bold"}}>
             {(qte * price).toFixed(2)} €
           </Text>
         </TouchableOpacity>

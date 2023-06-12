@@ -6,7 +6,8 @@ const knex = require('../knexSetup')
 router.get("/", async (req, res) => {
   await knex
     .select("*")
-    .from("boissons")
+    .from("commande")
+    .where("id_users", req.query.id_users)
     .then((result) => {
       console.log(result);
       res.send(result);
@@ -15,15 +16,26 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  await knex("boissons")
+    var snack = req.query.snack;
+    var boisson = req.query.boisson;
+    if (boisson == "null" && snack == "null") {
+      boisson = null;
+      snack = null;
+    }
+  await knex("commande")
     .insert({
+      qte: req.query.qte,
+      montant: req.query.montant,
       name: req.query.name,
-      image: req.query.image,
-      price: req.query.price,
+      boisson: boisson,
+      snack: snack,
+      id_users: req.query.id_users
     })
     .then((result) => {
       console.log(result);
-      res.status(201).send({ message: "La boisson a été ajouté avec succès" });
+      res
+        .status(201)
+        .send({ message: "La liste a été mis à jour avec succès" });
     })
     .catch({ message: "Erreur" });
 });

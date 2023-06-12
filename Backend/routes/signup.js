@@ -12,11 +12,9 @@ router.post("/", async (req, res) => {
     .select("id")
     .where("mail", req.query.mail)
     .first();
-
   if (emailExists) {
     return res.status(400).send({ message: "L'adresse email existe déjà" });
   }
-
   await knex("users")
     .insert({
       name: req.query.name,

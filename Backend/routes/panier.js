@@ -22,22 +22,41 @@ router.post("/", async (req, res) => {
     boisson = null;
     option = null;
   }
-  await knex("panier")
-    .insert({
+  const existingItem = await knex("panier")
+    .select("id")
+    .where("id_users", req.query.id_users)
+    .where("name", req.query.name)
+    .where("boisson", boisson)
+    .where("snack", option)
+    .first();
+
+  if (existingItem) {
+    await knex("panier").where("id", existingItem.id).update({
       montant: req.query.montant,
       datetime: knex.fn.now(),
       qte: req.query.qte,
-      name: req.query.name,
-      boisson: boisson,
-      snack: option,
-      image: req.query.image,
-      id_users: req.query.id_users,
-    })
-    .then((result) => {
-      console.log(result);
-      res.status(201).send({ message: "Le menu a été ajouté avec succès" });
-    })
-    .catch({ message: "Erreur" });
+    });
+    res
+      .status(200)
+      .send({ message: "panier mis à jour" });
+  } else {
+    await knex("panier")
+      .insert({
+        montant: req.query.montant,
+        datetime: knex.fn.now(),
+        qte: req.query.qte,
+        name: req.query.name,
+        boisson: boisson,
+        snack: option,
+        image: req.query.image,
+        id_users: req.query.id_users,
+      })
+      .then((result) => {
+        console.log(result);
+        res.status(201).send({ message: "Le menu a été ajouté avec succès" });
+      })
+      .catch({ message: "Erreur" });
+  }
 });
 
 router.delete("/", async (req, res) => {

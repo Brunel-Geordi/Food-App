@@ -14,7 +14,7 @@
  *   \   \ _ |  |  |  |______   \        /   | |  \  \   |       /  |  |        | |__|  | | |  \  \ |   \__/   | |  | \    | |  |____  |  |____
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  */
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   Ionicons,
@@ -27,12 +27,19 @@ import Homescreen from "../components/Home";
 import Connexion from "../components/connexion";
 import Compte from "../components/compte";
 import { style } from "../style/style";
-import { Pressable } from "react-native";
+import { Pressable, Keyboard, Alert } from "react-native";
 import { UserContext } from "../components/context";
 
 function Tabnav({ navigation }): JSX.Element {
   const Tab = createBottomTabNavigator();
-  const connected = useContext(UserContext)
+  const connected = useContext(UserContext);
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
+  const shohStatus = Keyboard.addListener("keyboardDidShow", () => {
+    setKeyboardStatus(true);
+  });
+  const hideStatus = Keyboard.addListener("keyboardDidHide", () => {
+    setKeyboardStatus(false);
+  });
   return (
     <Tab.Navigator
       screenOptions={{ tabBarActiveTintColor: "#316CB2" }}
@@ -44,7 +51,7 @@ function Tabnav({ navigation }): JSX.Element {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-home" size={size} color={color} />
-          ), 
+          ),
           headerTitleAlign: "center",
         }}
       />
@@ -66,13 +73,14 @@ function Tabnav({ navigation }): JSX.Element {
         }}
       />
       <Tab.Screen
-        name={"Mon Compte"}  
-        component={!connected.token ? Connexion : Compte}
+        name={"Mon Compte"}
+        component={connected.token ? Compte : Connexion}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-person-sharp" size={size} color={color} />
           ),
-          headerTitleAlign: "center"
+          headerShown: false,
+          tabBarStyle: keyboardStatus && { display: "none" },
         }}
       />
     </Tab.Navigator>

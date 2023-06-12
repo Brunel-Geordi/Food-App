@@ -23,48 +23,70 @@ import { getUsers } from "../services/get";
 
 export const UserContext = createContext(null);
 
-export const getUser = async (mail: string, pass: string, connected: any) => {
-  const user = await getUsers(mail, pass);
-  if (!user.hasOwnProperty('message')){
-    const token = user.map((us: { token: String }) => us.token);
-    const id = user.map((us: { id: String }) => us.id);
-    const name = user.map((us: { name: String }) => us.name);
-    connected.setToken(token[0]);
-    connected.setID(id);
-    connected.setName(name[0]);
-    return
-  }
-};
-
-function Context(props: { children: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal; }): JSX.Element {
+function Context(props: {
+  children:
+    | string
+    | number
+    | boolean
+    | React.ReactElement<any, string | React.JSXElementConstructor<any>>
+    | React.ReactFragment
+    | React.ReactPortal;
+}): JSX.Element {
   const [token, setToken] = useState(null);
   const [id_user, setID] = useState(null);
   const [name, setName] = useState(null);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     const storage = async () => {
       try {
-        if (token && name && name) {
+        if (token) {
           await AsyncStorage.setItem("token", token);
           await AsyncStorage.setItem("user", String(id_user));
           await AsyncStorage.setItem("name", String(name));
+          await AsyncStorage.setItem("role", String(role));
           return;
         }
         const _token = await AsyncStorage.getItem("token");
         const _user = await AsyncStorage.getItem("user");
         const _name = await AsyncStorage.getItem("name");
+        const _role = await AsyncStorage.getItem("role");
         setToken(_token);
         setID(_user);
         setName(_name);
+        setRole(_role);
       } catch (error) {
         console.log(error);
       }
     };
     storage();
-  }, [token, id_user, name]);
+  }, [token, id_user, name, role]);
+  const getUser = async (mail: string, pass: string) => {
+    const user = await getUsers(mail, pass);
+    if (!user.hasOwnProperty("message")) {
+      const[{token, id, name, role}] = user
+      setToken(token);
+      setID(id);
+      setName(name);
+      setRole(role);
+      return;
+    }
+  };
 
+const disconnect = async () => {
+    setToken(null);
+    setID(null);
+    setName(null);
+    setRole(null);
+    await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("user");
+    await AsyncStorage.removeItem("name");
+    await AsyncStorage.removeItem("role");
+  };
   return (
-    <UserContext.Provider value={{ token, setToken, id_user, setID, name, setName }}>
+    <UserContext.Provider
+      value={{ token, getUser, disconnect, id_user, name, role }}
+    >
       {props.children}
     </UserContext.Provider>
   );

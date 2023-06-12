@@ -9,6 +9,16 @@ export const getProduct = async (source) => {
     console.log(error);
   }
 };
+export const getList = async (id_users) => {
+  const user = `&id_users=${id_users}`
+  try {
+    const response = await fetch(`${apiUrl}commande?${user}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 
 export const dropSelction = async (point) => {

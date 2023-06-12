@@ -27,6 +27,10 @@ import Tabnav from "./tabscreen";
 import Description from "../components/product_description";
 import { createStackNavigator } from "@react-navigation/stack";
 import Connexion from "../components/connexion";
+import Compte from "../components/compte";
+import Costumers from "../components/userAccount/optionCostumers";
+import Card from "../components/paiement";
+import List from "../components/listCommand";
 
 function Screen(): JSX.Element {
   // const Stack = createNativeStackNavigator();
@@ -43,12 +47,22 @@ function Screen(): JSX.Element {
         <Stack.Screen
           name="Panier"
           component={Panier}
-          options={{ headerTitleAlign: "center" }}
+          options={{ headerTitleAlign: "center" , headerLeft: null}}
+        />
+        <Stack.Screen
+          name="Profil"
+          component={Compte}
+          options={{ headerTitleAlign: "center" , headerLeft: null}}
         />
         <Stack.Screen
           name="Drawer"
           component={Drawer}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ListComand"
+          component={List}
+          options={{headerTitleAlign: "center"}}
         />
         <Stack.Group screenOptions={{presentation:"modal"}}>
           <Stack.Screen

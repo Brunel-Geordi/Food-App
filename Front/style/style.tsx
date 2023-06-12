@@ -51,6 +51,7 @@ export const style = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 5,
+    justifyContent: "space-between"
   },
   sign: {
     flexDirection: "row",

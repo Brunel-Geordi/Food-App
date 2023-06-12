@@ -54,7 +54,7 @@ function Drawer({ navigation }): JSX.Element {
       <Draw.Screen
         name="Menus"
         component={Command}
-        initialParams={{ option: "menu" }}
+        initialParams={{ option: "menus" }}
         options={{
           drawerIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="food" size={size} color={color} />
@@ -75,7 +75,7 @@ function Drawer({ navigation }): JSX.Element {
       />
       <Draw.Screen
         name="Boissons"
-        initialParams={{ option: "boisson" }}
+        initialParams={{ option: "boissons" }}
         component={Command}
         options={{
           drawerIcon: ({ color, size }) => (
@@ -86,7 +86,7 @@ function Drawer({ navigation }): JSX.Element {
       />
       <Draw.Screen
         name="Snacks"
-        initialParams={{ option: "snack" }}
+        initialParams={{ option: "snacks" }}
         component={Command}
         options={{
           drawerIcon: ({ color, size }) => (
@@ -101,7 +101,7 @@ function Drawer({ navigation }): JSX.Element {
       />
       <Draw.Screen
         name="Desserts"
-        initialParams={{ option: "dessert" }}
+        initialParams={{ option: "desserts" }}
         component={Command}
         options={{
           drawerIcon: ({ color, size }) => (

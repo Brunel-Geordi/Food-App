@@ -44,7 +44,8 @@ export const styles = StyleSheet.create({
   errorText: {
     fontSize: 12,
     color: 'red',
-    fontStyle: "italic"
+    fontStyle: "italic",
+    alignSelf: "center",
   },
   errorInput: {
     borderColor: 'red',
