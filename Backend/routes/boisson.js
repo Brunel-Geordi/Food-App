@@ -8,7 +8,6 @@ router.get("/", async (req, res) => {
     .select("*")
     .from("boissons")
     .then((result) => {
-      console.log(result);
       res.send(result);
     })
     .catch({ message: "Erreur" });
@@ -22,8 +21,7 @@ router.post("/", async (req, res) => {
       price: req.query.price,
     })
     .then((result) => {
-      console.log(result);
-      res.status(201).send({ message: "La boisson a été ajouté avec succès" });
+      res.status(201).send({ message: "La boisson a été ajouté avec succès" }).send({result});
     })
     .catch({ message: "Erreur" });
 });

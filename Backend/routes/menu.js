@@ -8,7 +8,6 @@ router.get("/", async (req, res) => {
     .select("*")
     .from("menu")
     .then((result) => {
-      console.log(result);
       res.send(result);
     })
     .catch({ message: "Impossible de recuperé les données de menu" });
@@ -23,7 +22,6 @@ router.post("/", async (req, res) => {
       id_burger: req.query.id_burger,
     })
     .then((result) => {
-      console.log(result);
       res.status(201).send({ message: "Le menu a été ajouté avec succès" });
     })
     .catch({ message: "Erreur" });

@@ -9,7 +9,6 @@ router.get("/", async (req, res) => {
     .from("commande")
     .where("id_users", req.query.id_users)
     .then((result) => {
-      console.log(result);
       res.send(result);
     })
     .catch({ message: "Erreur" });
@@ -32,12 +31,22 @@ router.post("/", async (req, res) => {
       id_users: req.query.id_users
     })
     .then((result) => {
-      console.log(result);
       res
         .status(201)
         .send({ message: "La liste a été mis à jour avec succès" });
     })
     .catch({ message: "Erreur" });
 });
+
+router.delete("/", async (req, res) => {
+    await knex("panier")
+      .where("id_users", req.query.id_users)
+      .del()
+      .then((result) => {
+        res.send("Element supprimé avec succes");
+        res.send(result);
+      })
+      .catch({ message: "Impossible de recuperé les données du panier" });
+  });
 
 module.exports = router;

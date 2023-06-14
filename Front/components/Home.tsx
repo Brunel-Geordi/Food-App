@@ -17,19 +17,64 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React from "react";
+import React, { useContext } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
+import { UserContext } from "./context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 function Homescreen({ navigation }: any): JSX.Element {
+  const connected = useContext(UserContext);
   return (
-    <>
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text style={{ color: "#316CB2", fontSize: 40, fontWeight:"bold" }}>Home Screen</Text>
+    <SafeAreaProvider>
+      {connected.token && (
+        <View style={style.cardView}>
+          <Text style={style.fidelityPoint}>Mes points fedelity</Text>
+          <View style={style.crownView}>
+            <Text style={style.crownText}>{connected.fidelity} </Text>
+            <MaterialCommunityIcons
+              name="crown"
+              size={30}
+              color="gold"
+              style={{ alignSelf: "center" }}
+            />
+          </View>
+        </View>
+      )}
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Text style={{ color: "#316CB2", fontSize: 40, fontWeight: "bold" }}>
+          Home Screen
+        </Text>
         <MaterialCommunityIcons name="egg-fried" size={250} color="#316CB2" />
       </View>
-    </>
+    </SafeAreaProvider>
   );
 }
 
 export default Homescreen;
+
+const style = StyleSheet.create({
+  cardView: {
+    borderWidth: 2,
+    margin: 30,
+    borderRadius: 8,
+    backgroundColor: "red",
+    borderColor: "grey",
+  },
+  fidelityPoint: {
+    fontSize: 25,
+    alignSelf: "center",
+    fontWeight: "700",
+  },
+  crownText: {
+    fontSize: 25,
+    alignSelf: "center",
+    fontWeight: "700",
+    color: "gold",
+  },
+  crownView: {
+    flexDirection: "row",
+    justifyContent: "center",
+    padding: 10,
+  },
+});

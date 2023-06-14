@@ -32,28 +32,31 @@ import Spinner from "react-native-loading-spinner-overlay";
 import { UserContext } from "./context";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Card from "./paiement";
-import { number } from "yup";
 
 function Panier({ navigation }: any): JSX.Element {
   const [panier, setPanier] = useState([]);
-  const [loading, setLoading] = useState(panier.length >= 0);
+  const [loading, setLoading] = useState(panier ? panier.length >= 0 : false);
   const [view, setView] = useState(false);
   const user = useContext(UserContext);
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    somme();
+    somme()
     getProduct();
     setLoading(false);
-  }, [panier.length]);
+  }, [view]);
+
 
   const somme = () => {
-    if (panier.length > 0) {
-      const sumValue = panier.reduce(
-        (price, total) => price + parseFloat(total.montant),
-        0
-      );
-      setTotal(sumValue);
+    if (panier) {
+      if (panier.length > 0) {
+        const sumValue = panier.reduce(
+          (price, total) => price + parseFloat(total.montant),
+          0
+        );
+        setTotal(sumValue);
+      }
+      return;
     }
   };
   const token = useContext(UserContext);
@@ -65,7 +68,7 @@ function Panier({ navigation }: any): JSX.Element {
       setPanier(data);
       return data;
     } catch (error) {
-      console.log(error);
+      return;
     }
   };
 
@@ -85,7 +88,6 @@ function Panier({ navigation }: any): JSX.Element {
         throw new Error("Impossible de supprimer le panier");
       }
     } catch (error) {
-      console.log(error);
       return false;
     }
   };
@@ -156,7 +158,7 @@ function Panier({ navigation }: any): JSX.Element {
                           fontWeight: "bold",
                         }}
                       >
-                        : {produit.qte}
+                        {produit.qte} X
                       </Text>
                       <Text
                         style={{
@@ -199,7 +201,13 @@ function Panier({ navigation }: any): JSX.Element {
                 </View>
               ))}
             </ScrollView>
-            <View style={{ alignItems: "center", borderTopWidth: 2 }}>
+            <View
+              style={{
+                alignItems: "center",
+                borderTopWidth: 2,
+                borderTopColor: "#ccc",
+              }}
+            >
               <TouchableOpacity
                 style={{
                   alignItems: "center",
@@ -247,7 +255,6 @@ function Panier({ navigation }: any): JSX.Element {
           closeView={() => setView(false)}
           sum={total}
           list={panier}
-          clear={() => setPanier(null)}
         />
       )}
     </>

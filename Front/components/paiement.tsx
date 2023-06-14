@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   Modal,
   StyleSheet,
@@ -15,29 +15,35 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { cardValidation } from "../services/formValidation";
 import { setList } from "../services/post";
 import { UserContext } from "./context";
+import { clearPanier } from "../services/delete";
+import { updateFidelity } from "../services/update";
 
-function Card({view, closeView, navigation, sum, list, clear}): JSX.Element {
-const connected = useContext(UserContext)
+function Card({ view, closeView, navigation, sum, list }): JSX.Element {
+  const connected = useContext(UserContext);
 
-const addList = () =>{
-    list.map((element : any) => {
-        setList(element.name, element.qte, element.boisson, element.snack, element.montant, connected.id_user)
+  const addList = () => {
+    list.map((element: any) => {
+      setList(
+        element.name,
+        element.qte,
+        element.boisson,
+        element.snack,
+        element.montant,
+        connected.id_user
+      );
     });
-}
+  };
   return (
     <SafeAreaView style={modal.centeredView}>
       <Modal
         transparent={true}
         visible={view}
         onRequestClose={() => {
-            closeView()
+          closeView();
         }}
       >
         <View style={[modal.centeredView]}>
-          <Pressable
-            style={modal.button}
-            onPress={() => closeView()}
-          >
+          <Pressable style={modal.button} onPress={() => closeView()}>
             <MaterialIcons name="cancel" size={30} color="black" />
           </Pressable>
           <View style={modal.modalView}>
@@ -48,7 +54,13 @@ const addList = () =>{
                 crypto: "",
                 validation: "",
               }}
-              onSubmit={(values) => {addList(),navigation.navigate("ListComand")}}
+              onSubmit={(values) => {
+                addList(),
+                  clearPanier(connected.id_user),
+                  navigation.navigate("Liste de commande"),
+                  closeView();
+                  updateFidelity(Math.round(2*sum), connected.id_user)
+              }}
             >
               {({ handleSubmit, values, errors }) => (
                 <>
@@ -132,7 +144,7 @@ const addList = () =>{
                         fontSize: 20,
                       }}
                     >
-                      {sum} € 
+                      {sum} €
                     </Text>
                   </TouchableOpacity>
                 </>

@@ -14,7 +14,7 @@
  *   \   \ _ |  |  |  |______   \        /   | |  \  \   |       /  |  |        | |__|  | | |  \  \ |   \__/   | |  | \    | |  |____  |  |____
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  */
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   Ionicons,
@@ -27,7 +27,7 @@ import Homescreen from "../components/Home";
 import Connexion from "../components/connexion";
 import Compte from "../components/compte";
 import { style } from "../style/style";
-import { Pressable, Keyboard, Alert } from "react-native";
+import { Pressable, Keyboard } from "react-native";
 import { UserContext } from "../components/context";
 
 function Tabnav({ navigation }): JSX.Element {

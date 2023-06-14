@@ -8,7 +8,6 @@ router.get("/", async (req, res) => {
     .select("*")
     .from("option")
     .then((result) => {
-      console.log(result);
       res.send(result);
     })
     .catch({ message: "Erreur" });
@@ -21,7 +20,6 @@ router.post("/", async (req, res) => {
       image: req.query.image,
     })
     .then((result) => {
-      console.log(result);
       res.status(201).send({ message: "L'accompagnrement a été ajouté avec succès" });
     })
     .catch({ message: "Erreur" });

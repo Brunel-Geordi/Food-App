@@ -17,7 +17,7 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React, { useContext, useState, useEffect} from "react";
+import React, { useContext} from "react";
 import { UserContext } from "./context";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Admin from "./adminAccount/optionAdmin";
@@ -26,7 +26,7 @@ function Compte({ navigation }: any): JSX.Element {
   const connected = useContext(UserContext);
   return (
     <SafeAreaProvider>
-      {connected.role === 'admin' ? (<Admin />) : (<Costumers navigation={navigation}/>)}
+      {connected.role === 'admin' ? (<Admin navigation={navigation}/>) : (<Costumers navigation={navigation}/>)}
     </SafeAreaProvider>
   );
 }

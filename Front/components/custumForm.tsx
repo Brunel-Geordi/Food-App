@@ -1,4 +1,3 @@
-// CustomInput.js
 import React from 'react'
 import { Text, TextInput, StyleSheet } from 'react-native'
 

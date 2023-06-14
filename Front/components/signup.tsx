@@ -4,12 +4,12 @@
  *
  * @format
  */
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { style } from "../style/style";
 import { View } from "react-native";
 import { Field, Formik } from "formik";
 import { signUpValidationSchema } from "../services/formValidation";
-import { SafeAreaView, Text, TouchableOpacity } from "react-native";
+import { SafeAreaView, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { UserContext } from "./context";
 import { postUsers } from "../services/post";
@@ -156,3 +156,4 @@ function SignUp({ navigation }: any): JSX.Element {
   );
 }
 export default SignUp;
+

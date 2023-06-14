@@ -11,7 +11,6 @@ export const loginValidationSchema = yup.object().shape({
     .required("Le mot de passe est obligatoire"),
 });
 
-// SignUp.js
 export const signUpValidationSchema = yup.object().shape({
   name: yup
     .string()
@@ -29,15 +28,14 @@ export const signUpValidationSchema = yup.object().shape({
     .matches(/\d/, "au moins un chiffre")
     .matches(/[!@#$%^&*()\-_"=+{}; :,<.>?]/, "au moin un caractere special")
     .min(8, ({ min }) => `au moin ${min} caractères`)
-    .required("Password is required"),
+    .required("Champ obligatoire"),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("password")], "mots de passes non identiques")
     .required("Confirmé votre mot de passe"),
 });
 
-// BlogForm.js
-export const blogValidationSchema = yup.object().shape({
+export const newProductValidationSchema = yup.object().shape({
   name: yup.string().required("Nom du produit obligatoire").min(4, ({ min }) => `Ce champ doit contenir minimum ${min} caractères`),
   price: yup.number().required("Champ obligatoire"),
   photo: yup.string().required("Photo is required"),

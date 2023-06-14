@@ -45,7 +45,7 @@ export const setList = async (name, qte, boisson, snack, montant, id_user ) => {
     const result = response.json();
     return result;
   } catch (error) {
-    console.log(error);
+    return
   }
 };
 
@@ -73,7 +73,7 @@ export const uploadImage = async (image, nom, endpoint) => {
     }
     return response;
   } catch (error) {
-    console.log(error);
+    return
   } 
 };
 

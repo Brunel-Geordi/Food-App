@@ -18,15 +18,16 @@
  *
  */
 import React, { useEffect, useState, useContext } from "react";
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet, Animated } from "react-native";
 import { getList } from "../services/get";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import { UserContext } from "./context";
 
 function List({ navigation }: any): JSX.Element {
   const [data, setData] = useState([]);
-  const connected = useContext(UserContext)
+  const [jauge, setJauge] = useState(100);
+  const connected = useContext(UserContext);
   useEffect(() => {
     getData();
   }, [data.length]);
@@ -36,16 +37,65 @@ function List({ navigation }: any): JSX.Element {
   };
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{alignItems: "center", justifyContent: "center" }}>
+      <ScrollView>
         {data.length > 0 &&
           data.map((list) => (
-            <ScrollView key={list.id}>
-              <Text>{list.name}</Text>
-            </ScrollView>
+            <View
+              key={list.id}
+              style={{
+                borderWidth: 1.5,
+                margin: 5,
+                paddingHorizontal: 10,
+                borderRadius: 5,
+                backgroundColor: "#E8E2E2",
+              }}
+            >
+              <Text>
+                {list.qte}
+                {"x  "}
+                {list.name}
+              </Text>
+              {list.boisson && list.snack && (
+                <View>
+                  <Text>{list.boisson}</Text>
+                  <Text>{list.snack}</Text>
+                </View>
+              )}
+              <View style={styles.container}>
+                <Text>{list.status}</Text>
+                {list.status !== "Retiré" && (
+                  <View style={styles.progressBar}>
+                    <Animated.View
+                      style={{ backgroundColor: "#8BED4F", width: `${jauge}%` }}
+                    />
+                  </View>
+                )}
+              </View>
+            </View>
           ))}
-      </SafeAreaView>
+      </ScrollView>
     </SafeAreaProvider>
   );
 }
 
 export default List;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 10,
+    backgroundColor: "#E8E2E2",
+    padding: 8,
+  },
+  progressBar: {
+    height: 15,
+    flexDirection: "row",
+    width: "100%",
+    backgroundColor: "white",
+    borderColor: "#000",
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+});

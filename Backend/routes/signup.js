@@ -23,11 +23,9 @@ router.post("/", async (req, res) => {
       token: token
     })
     .then((result) => {
-      console.log(result);
       res.status(201).send({ message: "un user a été ajouté avec succès" });
     })
     .catch(error => {
-      console.error(error);
       res.status(500).send({ message: "Une erreur est survenue lors de l'insertion dans la base de données" });
     });
 });

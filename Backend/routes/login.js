@@ -3,7 +3,6 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const knex = require('../knexSetup')
-const salt = bcrypt.genSaltSync(10);
 
 router.get("/", async (req, res) => {
   await knex
@@ -28,7 +27,6 @@ router.get("/", async (req, res) => {
       res
         .status(500)
         .send({ message: "Erreur lors de la récupération de l'utilisateur" });
-        console.log(error)
     });
 });
 

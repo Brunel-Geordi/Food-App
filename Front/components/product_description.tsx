@@ -26,7 +26,6 @@ import { dropSelction } from "../services/get";
 import { imageUrl } from "../services/api";
 import { setPanier } from "../services/post";
 import { UserContext } from "./context";
-import Command from "./command";
 
 function Description({ route, navigation }: any): JSX.Element {
   useEffect(() => {

@@ -5,9 +5,9 @@
  * @format
  */
 
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
-import { SafeAreaView, Text, TextInput, TouchableOpacity } from "react-native";
+import { SafeAreaView, Text, TouchableOpacity } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import SignUp from "./signup";
 import Login from "./login";

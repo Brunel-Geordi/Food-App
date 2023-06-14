@@ -27,7 +27,6 @@ function Login({ navigation }: any): JSX.Element {
   };
   useEffect(() => {}, []);
   return (
-    <>
       <SafeAreaView>
         <View
           style={{
@@ -113,7 +112,6 @@ function Login({ navigation }: any): JSX.Element {
           </Formik>
         </View>
       </SafeAreaView>
-    </>
   );
 }
 export default Login;

@@ -17,7 +17,7 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   Button,
@@ -31,11 +31,11 @@ import { UserContext } from "../context";
 import { Field, Formik } from "formik";
 import CustomInput, { styles } from "../custumForm";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { blogValidationSchema } from "../../services/formValidation";
+import { newProductValidationSchema } from "../../services/formValidation";
 import { style } from "../../style/style";
-import { EvilIcons, AntDesign, Entypo } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { launchImageLibraryAsync, launchCameraAsync } from "expo-image-picker";
+import { launchImageLibraryAsync } from "expo-image-picker";
 import { newProduct, uploadImage } from "../../services/post";
 import DropDownPicker from "react-native-dropdown-picker";
 function Admin({ navigation }: any): JSX.Element {
@@ -49,7 +49,6 @@ function Admin({ navigation }: any): JSX.Element {
     { label: "Snack", value: "snacks" },
     { label: "Dessert", value: "desserts" },
   ]);
-  // {label: 'Accompagnement', value: 'option'},
   const [newImage, setNewImage] = useState(null);
   const [value, setValue] = useState(true);
   const [image, setImage] = useState(true);
@@ -110,6 +109,7 @@ function Admin({ navigation }: any): JSX.Element {
             }}>Administrateur</Text>
         </View>
       </View>
+      <Button title="Liste de commande" onPress={()=> navigation.navigate("Validation")}/>
       <DropDownPicker
         open={openSnack}
         value={selectedSnack}
@@ -122,7 +122,7 @@ function Admin({ navigation }: any): JSX.Element {
       {selectedSnack && (
         <ScrollView>
           <Formik
-            validationSchema={blogValidationSchema}
+            validationSchema={newProductValidationSchema}
             initialValues={{
               name: "",
               price: "",
@@ -130,7 +130,6 @@ function Admin({ navigation }: any): JSX.Element {
             }}
             onSubmit={(values) => {
                 newProduct(selectedSnack, values.name, values.price, `${selectedSnack}/${(values.name.replace(/ /g, "_")).toLowerCase()}.png`)
-              console.log(values);
               ressetForm(values);
             }}
           >
@@ -169,12 +168,10 @@ function Admin({ navigation }: any): JSX.Element {
                     const { status } =
                       await ImagePicker.requestCameraPermissionsAsync();
                     if (status !== "granted") {
-                      console.log("Permission refusé");
                       return;
                     }
                     const result = await launchImageLibraryAsync({
                       allowsEditing: true,
-                      aspect: [4, 3],
                     });
 
                     if (!result.canceled) {
@@ -224,7 +221,7 @@ function Admin({ navigation }: any): JSX.Element {
                     marginTop: 10,
                   }}
                   onPress={() => {
-                    deleteImage(values), console.log(values.photo);
+                    deleteImage(values)
                   }}
                 >
                   <Text

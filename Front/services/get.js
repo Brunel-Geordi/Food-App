@@ -6,7 +6,7 @@ export const getProduct = async (source) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    return
   }
 };
 export const getList = async (id_users) => {
@@ -16,7 +16,16 @@ export const getList = async (id_users) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    return
+  }
+};
+export const setStatus = async (status) => {
+  try {
+    const response = await fetch(`${apiUrl}admin/status?status=${status}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+  return
   }
 };
 
@@ -31,7 +40,7 @@ export const dropSelction = async (point) => {
     }));
     return newOptions;
   } catch (error) {
-    console.log(error);
+    return
   }
 };
 
@@ -43,6 +52,6 @@ export const getUsers = async (mail, pass) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log(error);
+    return
   }
 };

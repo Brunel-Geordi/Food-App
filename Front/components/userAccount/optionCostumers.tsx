@@ -90,7 +90,7 @@ function Costumers({ navigation }: any): JSX.Element {
             borderBottomWidth: 1,
             borderBottomColor: "grey",
           }}
-          onPress={() => navigation.push("ListComand")}
+          onPress={() => navigation.push("Liste de commande")}
         >
           <Feather name="check-circle" size={25} color="black" />
           <Text style={{ fontSize: 18, marginVertical: 10 }}>
@@ -117,6 +117,7 @@ function Costumers({ navigation }: any): JSX.Element {
             borderBottomWidth: 1,
             borderBottomColor: "grey",
           }}
+          onPress={() => navigation.navigate("Home")}
         >
           <MaterialCommunityIcons name="crown" size={25} color="black" />
           <Text style={{ fontSize: 18, marginVertical: 10 }}>

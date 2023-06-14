@@ -18,7 +18,7 @@
  *
  */
 import React from "react";
-import { Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, View } from "react-native";
 
 function Profil({ navigation }: any): JSX.Element {

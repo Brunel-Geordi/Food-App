@@ -9,7 +9,6 @@ router.get("/", async (req, res) => {
     .from("panier")
     .where("id_users", req.query.id_users)
     .then((result) => {
-      console.log(result);
       res.send(result);
     })
     .catch({ message: "Impossible de recuperé les données du panier" });
@@ -52,7 +51,6 @@ router.post("/", async (req, res) => {
         id_users: req.query.id_users,
       })
       .then((result) => {
-        console.log(result);
         res.status(201).send({ message: "Le menu a été ajouté avec succès" });
       })
       .catch({ message: "Erreur" });
@@ -64,7 +62,6 @@ router.delete("/", async (req, res) => {
     .where("id", req.query.id)
     .del()
     .then((result) => {
-      console.log("Element supprimé avec succes");
       res.send("Element supprimé avec succes");
       res.send(result);
     })
@@ -90,7 +87,6 @@ router.put("/", async (req, res) => {
       image: req.query.image,
     })
     .then((result) => {
-      console.log(result);
       res.status(201).send({ message: "Mise à jour reussi" });
     })
     .catch({ message: "Impossible de recuperé les données du panier" });

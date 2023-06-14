@@ -9,7 +9,25 @@ export const detetePanier = async(point) => {
       }));
       return newOptions;
     } catch (error) {
-      console.log(error);
+    }
+  };
+
+  export const clearPanier = async (id_users) => {
+    try {
+      const response = await fetch(`${apiUrl}commande?&id_users=${id_users}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        return response;
+      } else {
+        throw new Error("Impossible de supprimer le panier");
+      }
+    } catch (error) {
+      return
     }
   };
   

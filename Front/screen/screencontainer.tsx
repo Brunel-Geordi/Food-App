@@ -18,7 +18,6 @@
  *
  */
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import Drawer from "./drawerscreen";
@@ -26,14 +25,11 @@ import Panier from "../components/panier";
 import Tabnav from "./tabscreen";
 import Description from "../components/product_description";
 import { createStackNavigator } from "@react-navigation/stack";
-import Connexion from "../components/connexion";
 import Compte from "../components/compte";
-import Costumers from "../components/userAccount/optionCostumers";
-import Card from "../components/paiement";
 import List from "../components/listCommand";
+import Validation from "../components/adminAccount/view_command";
 
 function Screen(): JSX.Element {
-  // const Stack = createNativeStackNavigator();
   const Stack = createStackNavigator();
 
   return (
@@ -60,8 +56,13 @@ function Screen(): JSX.Element {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="ListComand"
+          name="Liste de commande"
           component={List}
+          options={{headerTitleAlign: "center"}}
+        />
+        <Stack.Screen
+          name="Validation"
+          component={Validation}
           options={{headerTitleAlign: "center"}}
         />
         <Stack.Group screenOptions={{presentation:"modal"}}>

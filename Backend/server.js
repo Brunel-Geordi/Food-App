@@ -9,11 +9,15 @@ const login = require('./routes/login');
 const upload = require('./routes/upload');
 const router = require('./routes/all');
 const listRouter = require('./routes/listcmd');
+const adminView = require('./routes/admin_view');
+const usersReduction = require('./routes/users_point');
 
 app.use(bodyParser.json({type:'application/json'}));
 app.use(bodyParser.urlencoded({extends:true}));
 
+app.use('/users/fidelity', usersReduction);
 app.use('/upload', upload);
+app.use('/admin/status', adminView);
 app.use('/commande', listRouter);
 app.use('/signup', signUp);
 app.use('/login', login);

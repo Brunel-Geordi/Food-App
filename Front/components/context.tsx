@@ -17,9 +17,9 @@
  *     \ _______|  |_________|    \ ___ /    |_|   \__\  |______/   |__|        |______/  |_|   \__\ \________/  |__|  \___| |_______| |_______|
  *
  */
-import React, { useState, useContext, createContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUsers } from "../services/get";
+import React, { useState, createContext, useEffect } from "react";
 
 export const UserContext = createContext(null);
 
@@ -36,6 +36,7 @@ function Context(props: {
   const [id_user, setID] = useState(null);
   const [name, setName] = useState(null);
   const [role, setRole] = useState(null);
+  const [fidelity, setFidelity] = useState(null);
 
   useEffect(() => {
     const storage = async () => {
@@ -45,30 +46,34 @@ function Context(props: {
           await AsyncStorage.setItem("user", String(id_user));
           await AsyncStorage.setItem("name", String(name));
           await AsyncStorage.setItem("role", String(role));
+          await AsyncStorage.setItem("fidelity", String(fidelity));
           return;
         }
         const _token = await AsyncStorage.getItem("token");
         const _user = await AsyncStorage.getItem("user");
         const _name = await AsyncStorage.getItem("name");
         const _role = await AsyncStorage.getItem("role");
+        const _fidelity = await AsyncStorage.getItem("fidelity");
         setToken(_token);
         setID(_user);
         setName(_name);
         setRole(_role);
+        setFidelity(_fidelity);
       } catch (error) {
-        console.log(error);
+        return
       }
     };
     storage();
-  }, [token, id_user, name, role]);
+  }, [token, id_user, name, role, fidelity]);
   const getUser = async (mail: string, pass: string) => {
     const user = await getUsers(mail, pass);
     if (!user.hasOwnProperty("message")) {
-      const[{token, id, name, role}] = user
+      const[{token, id, name, role, fidelity}] = user
       setToken(token);
       setID(id);
       setName(name);
       setRole(role);
+      setFidelity(fidelity);
       return;
     }
   };
@@ -82,10 +87,11 @@ const disconnect = async () => {
     await AsyncStorage.removeItem("user");
     await AsyncStorage.removeItem("name");
     await AsyncStorage.removeItem("role");
+    await AsyncStorage.removeItem("fidelity");
   };
   return (
     <UserContext.Provider
-      value={{ token, getUser, disconnect, id_user, name, role }}
+      value={{ token, getUser, disconnect, id_user, name, role, fidelity }}
     >
       {props.children}
     </UserContext.Provider>
